@@ -14,32 +14,8 @@
   <link href="/css/style.css" rel="stylesheet"> <!-- MANDATORY -->
   <link href="/css/theme.css" rel="stylesheet"> <!-- MANDATORY -->
   <link href="/css/ui.css" rel="stylesheet"> <!-- MANDATORY -->
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-  <script src="plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-  <![endif]-->
+
 </head>
-<!-- LAYOUT: Apply "submenu-hover" class to body element to have sidebar submenu show on mouse hover -->
-<!-- LAYOUT: Apply "sidebar-collapsed" class to body element to have collapsed sidebar -->
-<!-- LAYOUT: Apply "sidebar-top" class to body element to have sidebar on top of the page -->
-<!-- LAYOUT: Apply "sidebar-hover" class to body element to show sidebar only when your mouse is on left / right corner -->
-<!-- LAYOUT: Apply "submenu-hover" class to body element to show sidebar submenu on mouse hover -->
-<!-- LAYOUT: Apply "fixed-sidebar" class to body to have fixed sidebar -->
-<!-- LAYOUT: Apply "fixed-topbar" class to body to have fixed topbar -->
-<!-- LAYOUT: Apply "rtl" class to body to put the sidebar on the right side -->
-<!-- LAYOUT: Apply "boxed" class to body to have your page with 1200px max width -->
-<!-- THEME STYLE: Apply "theme-sdtl" for Sidebar Dark / Topbar Light -->
-<!-- THEME STYLE: Apply  "theme sdtd" for Sidebar Dark / Topbar Dark -->
-<!-- THEME STYLE: Apply "theme sltd" for Sidebar Light / Topbar Dark -->
-<!-- THEME STYLE: Apply "theme sltl" for Sidebar Light / Topbar Light -->
-<!-- THEME COLOR: Apply "color-default" for dark color: #2B2E33 -->
-<!-- THEME COLOR: Apply "color-primary" for primary color: #319DB5 -->
-<!-- THEME COLOR: Apply "color-red" for red color: #C9625F -->
-<!-- THEME COLOR: Apply "color-default" for green color: #18A689 -->
-<!-- THEME COLOR: Apply "color-default" for orange color: #B66D39 -->
-<!-- THEME COLOR: Apply "color-default" for purple color: #6E62B5 -->
-<!-- THEME COLOR: Apply "color-default" for blue color: #4A89DC -->
-<!-- BEGIN BODY -->
 <body class="fixed-topbar submenu-hover color-default theme-sltl bg-lighter">
   <section>
       <!-- BEGIN SIDEBAR -->
@@ -60,12 +36,12 @@
             <span>MAIN MENU</span>
           </div>
           <ul class="nav nav-sidebar">
-            <li class="tm nav-parent active"><a href="/tape/"><span>Tape Storage</span></a>
+            <li class="tm nav-parent active"><a href="tape"><span>Tape Storage</span></a>
             <ul class="children collapse">
                 <li class=""><a data-toggle="modal" data-target="#myModal" href="#">Tambah Tape</a></li>
             </ul>
             </li>
-            <li class="tm nav-parent">
+            <!-- <li class="tm nav-parent">
               <a href=""><i class="fa fa-car"></i><span>BBM</span> <span class="fa arrow active"></span></a>
               <ul class="children collapse">
                 <li class=""><a href="/databbm">Data BBM</a></li>
@@ -73,7 +49,7 @@
                 <li class=""><a href="/input">Input BBM</a></li>
                 <li class=""><a href="/rekap">Rekap BBM</a></li>
               </ul>
-            </li>
+            </li> -->
           </ul>
           <div class="sidebar-widgets"></div>
           <div class="sidebar-footer clearfix" style="">
@@ -126,17 +102,27 @@
               <h4 class="modal-title" id="myModalLabel">Tambah Tape</h4>
             </div>
             <div class="modal-body">
-              <form action="/action_page.php">
-                First name:<br>
-                <input type="text" name="firstname" value="Mickey">
-                <br>
-                Last name:<br>
-                <input type="text" name="lastname" value="Mouse">
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Tambah</button>
+                {!! Form::open(array('url' => '/tape')) !!}
+                <div class="form-group">
+                  {!! Form::label('kode_label_tape', 'Kode Label Tape') !!}
+                  {!! Form::text('kode_label_tape', null , array('class' => 'form-control')) !!}
+                </div>
+                <div class="form-group">
+                  {!! Form::label('nomor_jenis_tape', 'Jenis Tape') !!}
+                  {!! Form::select('nomor_jenis_tape', $jenistape ,null , array('class' => 'form-control')) !!}
+                </div>
+                <div class="form-group">
+                  {!! Form::label('kode_rak_tape', 'Rak Tape') !!}
+                  {!! Form::select('kode_rak_tape', $raktape, null , array('class' => 'form-control')) !!}
+                </div>
+                <div class="form-group">
+                  {!! Form::label('nomor_baris_tape', 'Baris Tape') !!}
+                  {!! Form::text('nomor_baris_tape', null , array('class' => 'form-control')) !!}
+                </div>
+                {!! Form::button(' Tambah', array('type' => 'submit', 'class' => 'btn btn-primary'))!!}
+                {!! Form::button(' Batal', array('type' => 'button', 'class' => 'btn btn-default', 'data-dismiss' => 'modal'))!!}
+                {{ csrf_field() }}
+                {!! Form::close()!!}
             </div>
           </div>
         </div>

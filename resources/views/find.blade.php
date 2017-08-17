@@ -14,12 +14,12 @@
 @section('content')	
 	<div class="panel panel-default">
     <div class="panel-body">
-	{!! Form::open(array('method'=>'get', 'url' => '/searchdata')) !!}
+	{!! Form::open(array('method'=>'get', 'url' => '/search')) !!}
     	{!! Form::label('search', 'Search') !!}
         {!! Form::text('search',null, array('class'=>'form-control', 'placeholder'=>'Cari menurut nomor tape, jenis tape, kode rak, dll.')) !!}
     {!! Form::close()!!}
         <br>
-        @if(count($tape))
+        @if(count($found))
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover table-condensed tfix">
                     <thead align="center">
@@ -32,20 +32,20 @@
                            <td><b>Peminjam</b></td>
                        </tr>
                    </thead>
-                   @foreach($tape as $t)
+                   @foreach($found as $f)
                        <tr>
-                           <td>{{ $t->kode_label_tape }}</td>
-                           <td>{{ $t->nomor_jenis_tape }}</td>
-                           <td>{{ $t->kode_rak_tape }}</td>
+                           <td>{{ $f->kode_label_tape }}</td>
+                           <td>{{ $f->nomor_jenis_tape }}</td>
+                           <td>{{ $f->kode_rak_tape }}</td>
                            <td>
-                           @if($t->status === 1)
+                           @if($f->status === 1)
                            	Available
-                           @elseif($t->status === 0)
+                           @elseif($f->status === 0)
                            	Unavailable
                            @endif
                            </td>
-                           <td>{{ $t->nomor_baris_tape }}</td>
-                           <td>{{ $t->peminjam }}</td>
+                           <td>{{ $f->nomor_baris_tape }}</td>
+                           <td>{{ $f->peminjam }}</td>
                        </tr>
                    @endforeach
               </table>

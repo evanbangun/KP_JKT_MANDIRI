@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\tape;
+use App\master_rak;
+use App\master_jenis_tape;
+use DB;
 
 class TapeController extends Controller
 {
@@ -15,7 +18,9 @@ class TapeController extends Controller
     public function index()
     {
         $tape = tape::all();
-        return view ('home',compact('tape'));
+        $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
+        $raktape = master_rak::pluck('kode_rak', 'kode_rak');
+        return view ('home',compact('tape', 'jenistape', 'raktape'));
     }
 
     /**
@@ -36,7 +41,8 @@ class TapeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        tape::create($request->all());
+        return redirect('/');
     }
 
     /**
@@ -59,6 +65,21 @@ class TapeController extends Controller
     public function edit($id)
     {
         //
+    }
+
+    public function searchdata(Request $request)
+    {
+        $searchdata = $request->input('search');
+        if(!empty($searchdata)){
+        $found = DB::table('tapes')
+        ->where('kode_label_tape', 'LIKE', '%' . $searchdata . '%')
+        ->orwhere('nomor_jenis_tape', 'LIKE', '%' . $searchdata . '%')
+        ->orwhere('kode_rak_tape', 'LIKE', '%' . $searchdata . '%')
+        ->get();
+        }
+        $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
+        $raktape = master_rak::pluck('kode_rak', 'kode_rak');
+        return view('find', compact('found', 'jenistape', 'raktape'));
     }
 
     /**

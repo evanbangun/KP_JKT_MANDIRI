@@ -16,6 +16,8 @@ Route::resource('tape','TapeController');
 
 Route::get('/', 'TapeController@index');
 
+Route::get('/searchdata', 'TapeController@searchdata');
+
 // Route::get('/home', function () {
 //     return view('home');
 // });

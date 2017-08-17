@@ -19,9 +19,9 @@ class CreateTapeTable extends Migration
             $table->primary('nomor_label_tape');
             $table->string('nomor_jenis_tape', 10);
             $table->string('kode_rak_tape', 10);
-            $table->integer('status', false, true);
+            $table->integer('status', false, true)->default('1');
             $table->integer('nomor_baris_tape', false, true);
-            $table->string('peminjam',1024);
+            $table->string('peminjam',1024)->->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
