@@ -41,21 +41,19 @@
                 <li class=""><a data-toggle="modal" data-target="#myModal" href="#">Tambah Tape</a></li>
             </ul>
             </li>
-            <!-- <li class="tm nav-parent">
-              <a href=""><i class="fa fa-car"></i><span>BBM</span> <span class="fa arrow active"></span></a>
+            <li class="tm nav-parent">
+              <a href=""><span>Tambah Data</span> <span class="fa arrow active"></span></a>
               <ul class="children collapse">
-                <li class=""><a href="/databbm">Data BBM</a></li>
-                <li class=""><a href="/transaksibbm">Data Transaksi BBM</a></li>
-                <li class=""><a href="/input">Input BBM</a></li>
-                <li class=""><a href="/rekap">Rekap BBM</a></li>
+                <li class=""><a href="/">Tambah Jenis</a></li>
+                <li class=""><a href="/">Tambah Lokasi</a></li>
               </ul>
-            </li> -->
+            </li>
           </ul>
           <div class="sidebar-widgets"></div>
-          <div class="sidebar-footer clearfix" style="">
+          <!-- <div class="sidebar-footer clearfix" style="">
             <a class="pull-left btn-effect" href="#" data-modal="modal-1" data-rel="tooltip" data-placement="top" data-original-title="Logout">
             <i class="icon-power"></i></a>
-          </div>
+          </div> -->
         </div>
       </div>
       <!-- END SIDEBAR -->
