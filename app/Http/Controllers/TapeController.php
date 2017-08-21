@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\tape;
 use App\master_rak;
 use App\master_jenis_tape;
+use App\master_lokasi;
 use DB;
 
 class TapeController extends Controller
@@ -17,10 +18,13 @@ class TapeController extends Controller
      */
     public function index()
     {
-        $tape = tape::all();
+        $tape = DB::table('tapes')->leftJoin('master_lokasis', 'tapes.lokasi_tape', '=', 'master_lokasis.kode_lokasi')
+                                  ->leftJoin('master_raks', 'tapes.kode_rak_tape', '=', 'master_raks.kode_rak')
+                                  ->get();
         $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
-        $raktape = master_rak::pluck('kode_rak', 'kode_rak');
-        return view ('home',compact('tape', 'jenistape', 'raktape'));
+        $raktape = master_rak::pluck('nomor_rak', 'kode_rak');
+        $lokasitape = master_lokasi::pluck('nama_lokasi', 'kode_lokasi');
+        return view ('home',compact('tape', 'jenistape', 'raktape', 'lokasitape'));
     }
 
     /**
@@ -72,14 +76,20 @@ class TapeController extends Controller
         $searchdata = $request->input('search');
         if(!empty($searchdata)){
         $found = DB::table('tapes')
-        ->where('kode_label_tape', 'LIKE', '%' . $searchdata . '%')
-        ->orwhere('nomor_jenis_tape', 'LIKE', '%' . $searchdata . '%')
+        ->where('nomor_label_tape', 'LIKE', '%' . $searchdata . '%')
+        ->orwhere('jenis_tape', 'LIKE', '%' . $searchdata . '%')
+        ->orwhere('status_tape', 'LIKE', '%' . $searchdata . '%')
+        ->orwhere('lokasi_tape', 'LIKE', '%' . $searchdata . '%')
         ->orwhere('kode_rak_tape', 'LIKE', '%' . $searchdata . '%')
+        ->orwhere('keterangan_tape', 'LIKE', '%' . $searchdata . '%')
+        ->leftJoin('master_lokasis', 'tapes.lokasi_tape', '=', 'master_lokasis.kode_lokasi')
+        ->leftJoin('master_raks', 'tapes.kode_rak_tape', '=', 'master_raks.kode_rak')
         ->get();
         }
         $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
-        $raktape = master_rak::pluck('kode_rak', 'kode_rak');
-        return view('find', compact('found', 'jenistape', 'raktape'));
+        $raktape = master_rak::pluck('nomor_rak', 'kode_rak');
+        $lokasitape = master_lokasi::pluck('nama_lokasi', 'kode_lokasi');
+        return view('find', compact('found', 'jenistape', 'raktape', 'lokasitape'));
     }
 
     /**

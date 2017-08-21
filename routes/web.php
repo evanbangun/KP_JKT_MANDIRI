@@ -14,6 +14,16 @@
 
 Route::resource('tape','TapeController');
 
+Route::resource('daftar','DaftarController');
+
+Route::resource('peminjaman','PeminjamanController');
+
+Route::post('/tambahlokasi','TambahController@tambahlokasi');
+
+Route::post('/tambahrak','TambahController@tambahrak');
+
+Route::post('/tambahjenistape','TambahController@tambahjenistape');
+
 Route::get('/', 'TapeController@index');
 
 Route::get('/searchdata', 'TapeController@searchdata');

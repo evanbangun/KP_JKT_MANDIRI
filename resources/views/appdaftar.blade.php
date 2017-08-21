@@ -36,9 +36,9 @@
             <span>MAIN MENU</span>
           </div>
           <ul class="nav nav-sidebar">
-            <li class="tm active"><a href="/tape"><span>Daftar Tape</span></a>
+            <li class="tm"><a href="/tape"><span>Daftar Tape</span></a>
             </li>
-            <li class="tm">
+            <li class="tm active">
               <a href="daftar"><span>Daftar Lokasi dan Rak</span> <span class="fa arrow active"></span></a>
             </li>
             <li class="tm nav-parent"><a href=""><span>Form</span></a>

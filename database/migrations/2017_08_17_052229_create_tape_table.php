@@ -13,29 +13,39 @@ class CreateTapeTable extends Migration
      */
     public function up()
     {
-        Schema::create('tape', function (Blueprint $table) {
+        Schema::create('tapes', function (Blueprint $table) {
             //$table->increments('id');
             $table->string('nomor_label_tape',10);
             $table->primary('nomor_label_tape');
-            $table->string('nomor_jenis_tape', 10);
-            $table->string('kode_rak_tape', 10);
-            $table->integer('status', false, true)->default('1');
-            $table->integer('nomor_baris_tape', false, true);
-            $table->string('peminjam',1024)->->nullable();
+            $table->string('jenis_tape', 10);
+            $table->string('status_tape', 1024)->default('Ada di warehouse');
+            $table->integer('lokasi_tape', false, true);
+            $table->integer('kode_rak_tape', false, true);
+            $table->integer('lapis_tape', false, true);
+            $table->integer('baris_tape', false, true);
+            $table->integer('slot_tape', false, true);
+            $table->string('keterangan_tape',1024)->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
-        Schema::table('tape',function($table){
-            $table->foreign('nomor_jenis_tape')
+        Schema::table('tapes',function($table){
+            $table->foreign('jenis_tape')
                   ->references('nomor_jenis')
-                  ->on('master_jenis_tape')
+                  ->on('master_jenis_tapes')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
         });
-        Schema::table('tape',function($table){
+        Schema::table('tapes',function($table){
             $table->foreign('kode_rak_tape')
                   ->references('kode_rak')
-                  ->on('master_rak')
+                  ->on('master_raks')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
+        });
+        Schema::table('tapes',function($table){
+            $table->foreign('lokasi_tape')
+                  ->references('kode_lokasi')
+                  ->on('master_lokasis')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
         });

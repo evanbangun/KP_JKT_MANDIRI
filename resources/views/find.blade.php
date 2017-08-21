@@ -26,33 +26,25 @@
                        <tr>
                            <td><b>Nomor Tape</b></td>
                            <td><b>Jenis Tape</b></td>
-                           <td><b>Kode Rak</b></td>
                            <td><b>Status</b></td>
-                           <td><b>Nomor Baris</b></td>
-                           <td><b>Peminjam</b></td>
+                           <td><b>Lokasi Rak</b></td>
+                           <td><b>Keterangan</b></td>
                        </tr>
                    </thead>
                    @foreach($found as $f)
                        <tr>
-                           <td>{{ $f->kode_label_tape }}</td>
-                           <td>{{ $f->nomor_jenis_tape }}</td>
-                           <td>{{ $f->kode_rak_tape }}</td>
-                           <td>
-                           @if($f->status === 1)
-                           	Available
-                           @elseif($f->status === 0)
-                           	Unavailable
-                           @endif
-                           </td>
-                           <td>{{ $f->nomor_baris_tape }}</td>
-                           <td>{{ $f->peminjam }}</td>
+                           <td>{{ $f->nomor_label_tape }}</td>
+                           <td>{{ $f->jenis_tape }}</td>
+                           <td>{{ $f->status_tape }}</td>
+                           <td>{{ $f->nama_lokasi }}, Rak {{ $f->nomor_rak }}, Lapis {{ $f->lapis_tape }}, Baris {{ $f->baris_tape }}, Slot {{ $f->slot_tape }}</td>
+                           <td>{{ $f->keterangan_tape }}</td>
                        </tr>
                    @endforeach
               </table>
           </div>
         @else
             <div class="alert alert-warning">
-                <i class="fa fa-exclamation-triangle"></i> ERROR
+                <i class="fa fa-exclamation-triangle"></i> Data Tidak Ditemukan
             </div>
         @endif
     </div>

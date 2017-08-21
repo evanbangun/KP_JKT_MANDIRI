@@ -14,7 +14,7 @@ class CreateMasterJenisTapeTable extends Migration
      */
     public function up()
     {
-        Schema::create('master_jenis_tape', function (Blueprint $table) {
+        Schema::create('master_jenis_tapes', function (Blueprint $table) {
             //$table->increments('id');
             $table->string('nomor_jenis',10);
             $table->primary('nomor_jenis');
