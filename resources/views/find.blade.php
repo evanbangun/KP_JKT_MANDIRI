@@ -14,7 +14,7 @@
 @section('content')	
 	<div class="panel panel-default">
     <div class="panel-body">
-	{!! Form::open(array('method'=>'get', 'url' => '/search')) !!}
+	{!! Form::open(array('method'=>'get', 'url' => '/searchdata')) !!}
     	{!! Form::label('search', 'Search') !!}
         {!! Form::text('search',null, array('class'=>'form-control', 'placeholder'=>'Cari menurut nomor tape, jenis tape, kode rak, dll.')) !!}
     {!! Form::close()!!}
@@ -36,7 +36,13 @@
                            <td>{{ $f->nomor_label_tape }}</td>
                            <td>{{ $f->jenis_tape }}</td>
                            <td>{{ $f->status_tape }}</td>
-                           <td>{{ $f->nama_lokasi }}, Rak {{ $f->nomor_rak }}, Lapis {{ $f->lapis_tape }}, Baris {{ $f->baris_tape }}, Slot {{ $f->slot_tape }}</td>
+                           <td>
+                           @if($f->digunakan_tape == 1)
+                           {
+                              {{ $f->nama_lokasi }}, Rak {{ $f->nomor_rak }}, Lapis {{ $f->lapis_tape }}, Baris {{ $f->baris_tape }}, Slot {{ $f->slot_tape }}
+                           }
+                           </td>
+                           @endif
                            <td>{{ $f->keterangan_tape }}</td>
                        </tr>
                    @endforeach

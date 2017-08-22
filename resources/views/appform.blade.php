@@ -36,9 +36,13 @@
             <span>MAIN MENU</span>
           </div>
           <ul class="nav nav-sidebar">
-            <li class="tm"><a href="/tape"><span>Daftar Tape</span></a>
+            <li class="tm nav-parent "><a href="/tape"><span>Daftar Tape</span></a>
+              <ul class="children collapse">
+                <li class=""><a href="/tape">Terpakai</a></li>
+                <li class=""><a href="/tapekosong">Kosong</a></li>
+              </ul>
             </li>
-            <li class="tm">
+            <li class="tm ">
               <a href="daftar"><span>Daftar Lokasi dan Rak</span> <span class="fa arrow active"></span></a>
             </li>
             <li class="tm nav-parent active"><a href=""><span>Form</span></a>

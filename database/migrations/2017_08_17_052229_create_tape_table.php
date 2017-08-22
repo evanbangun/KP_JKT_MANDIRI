@@ -20,11 +20,12 @@ class CreateTapeTable extends Migration
             $table->string('jenis_tape', 10);
             $table->string('status_tape', 1024)->default('Ada di warehouse');
             $table->integer('lokasi_tape', false, true);
-            $table->integer('kode_rak_tape', false, true);
-            $table->integer('lapis_tape', false, true);
-            $table->integer('baris_tape', false, true);
-            $table->integer('slot_tape', false, true);
+            $table->integer('kode_rak_tape', false, true)->nullable();
+            $table->integer('lapis_tape', false, true)->nullable();
+            $table->integer('baris_tape', false, true)->nullable();
+            $table->integer('slot_tape', false, true)->nullable();
             $table->string('keterangan_tape',1024)->nullable();
+            $table->integer('digunakan_tape', false, true)->default(0);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

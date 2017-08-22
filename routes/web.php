@@ -18,16 +18,20 @@ Route::resource('daftar','DaftarController');
 
 Route::resource('peminjaman','PeminjamanController');
 
+Route::get('/', 'TapeController@index');
+
+Route::get('/home', 'TapeController@index');
+
+Route::get('/tapekosong', 'TapeController@index2');
+
+Route::get('/tambahtapekosong', 'TapeController@createtapekosong');
+
+Route::post('/tambahtapebatch','TapeController@storebatch');
+
 Route::post('/tambahlokasi','TambahController@tambahlokasi');
 
 Route::post('/tambahrak','TambahController@tambahrak');
 
 Route::post('/tambahjenistape','TambahController@tambahjenistape');
 
-Route::get('/', 'TapeController@index');
-
 Route::get('/searchdata', 'TapeController@searchdata');
-
-// Route::get('/home', function () {
-//     return view('home');
-// });

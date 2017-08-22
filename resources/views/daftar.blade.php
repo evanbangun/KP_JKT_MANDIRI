@@ -14,11 +14,7 @@
 @section('content')	
 	<div class="panel panel-default">
     <div class="panel-body">
-	{!! Form::open(array('method'=>'get', 'url' => '/')) !!}
-    	{!! Form::label('search', 'Search') !!}
-        {!! Form::text('search',null, array('class'=>'form-control', 'placeholder'=>'Cari menurut nomor tape, jenis tape, kode rak, dll.')) !!}
-    {!! Form::close()!!}
-        <br>
+	     <br>
         <div>
           <div style="width: 31%; float:left; margin:0px">
             <a class="btn btn-primary" data-toggle="modal" data-target="#myModal" href="#"><i class="fa fa-plus-circle"></i> Tambah Lokasi</a>

@@ -11,7 +11,16 @@
     Tape Storage
 @endsection
 
-@section('content')	
+@section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif	
 	<div class="panel panel-default">
     <div class="panel-body">
 	{!! Form::open(array('method'=>'get', 'url' => '/searchdata')) !!}
@@ -20,6 +29,9 @@
     {!! Form::close()!!}
         <br>
         <a class="btn btn-primary" data-toggle="modal" data-target="#myModal" href="#"><i class="fa fa-plus-circle"></i> Tambah Data</a>
+        Jumlah Seluruh Tape : {{ $jumlahtotaltape }} &emsp; &emsp;
+        Terpakai : {{ $jumlahtapeterpakai }} &emsp; &emsp;
+        Kosong : {{ $jumlahtotaltape - $jumlahtapeterpakai }} &emsp; &emsp;
         @if(count($tape))
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover table-condensed tfix">
@@ -45,7 +57,7 @@
           </div>
         @else
             <div class="alert alert-warning">
-                <i class="fa fa-exclamation-triangle"></i> ERROR
+                <i class="fa fa-exclamation-triangle"></i> Tidak Ada Data
             </div>
         @endif
     </div>
@@ -95,6 +107,9 @@
                 <div class="form-group">
                   {!! Form::label('keterangan_tape', 'Keterangan Tape') !!}
                   {!! Form::text('keterangan_tape', null , array('class' => 'form-control')) !!}
+                </div>
+                <div class="form-group">
+                  {!! Form::hidden('digunakan_tape', '1') !!}
                 </div>
                 {!! Form::button(' Tambah', array('type' => 'submit', 'class' => 'btn btn-primary'))!!}
                 {!! Form::button(' Batal', array('type' => 'button', 'class' => 'btn btn-default', 'data-dismiss' => 'modal'))!!}
