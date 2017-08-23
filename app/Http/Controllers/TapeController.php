@@ -70,7 +70,7 @@ class TapeController extends Controller
         if($request->digunakan_tape == 1)
         {
             $this->validate($request, [
-            'nomor_label_tape' => 'required|unique:tapes',
+            'nomor_label_tape' => 'required',
             'jenis_tape' => 'required',
             'status_tape' => 'required',
             'lokasi_tape' => 'required',
@@ -79,26 +79,35 @@ class TapeController extends Controller
             'baris_tape' => 'required',
             'slot_tape' => 'required',
             ]);
+
             $check = DB::table('tapes')->where('lokasi_tape', '=', $request->lokasi_tape)
                                        ->where('kode_rak_tape', '=', $request->kode_rak_tape)
                                        ->where('lapis_tape', '=', $request->lapis_tape)
                                        ->where('baris_tape', '=', $request->baris_tape)
                                        ->where('slot_tape', '=', $request->slot_tape);
-            if($check)
+            if ($check->count())
             {
-                return redirect('/');
+                return redirect('/')->withErrors(['Slot tape is already used']);
             }
 
-            $check = DB::table('master_raks')->where('nomor_rak', '=', $request->kode_rak_tape)
+            $check = DB::table('master_raks')->where('kode_rak', '=', $request->kode_rak_tape)
                                              ->where('jenis_tape_rak', '=', $request->jenis_tape);
-            if(!$check)
+            if(isset($check))
             {
-                return redirect('/');
+                $msg = 'This rack is not for tape type '.$request->jenis_tape;
+                return redirect('/')->withErrors([$msg]);
+            }
+
+            $check = DB::table('tapes')->where('digunakan_tape', '=', '1')
+                                       ->where('nomor_label_tape', '=', $request->nomor_label_tape);
+            if($check->count())
+            {
+                return redirect('/')->withErrors(['Tape with label number '+$request->nomor_label_tape+' already exists']);
             }
 
             $check = DB::table('tapes')->where('digunakan_tape', '=', '0')
-                                       ->where('nomor_label_tape', '=', $request->nomor_label_tape);
-            if($check)
+                                        ->where('nomor_label_tape', '=', $request->nomor_label_tape);
+            if($check->count())
             {
                 tape::where('nomor_label_tape', $request->nomor_label_tape)->delete();
             }
