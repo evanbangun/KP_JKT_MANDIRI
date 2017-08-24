@@ -140,6 +140,33 @@ class TapeController extends Controller
         return redirect('/tapekosong');
     }
 
+    public function advancedsearch()
+    {
+        $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
+        $jenistape->prepend('All', '');
+        $raktape = master_rak::pluck('nomor_rak', 'kode_rak');
+        $raktape->prepend('All', '');
+        $lokasitape = master_lokasi::pluck('nama_lokasi', 'kode_lokasi');
+        $lokasitape->prepend('All', '');
+        return view('advancedsearch', compact('jenistape', 'raktape', 'lokasitape'));
+    }
+
+    public function advsearchdata(Request $request)
+    {
+        $found = DB::table('tapes')
+        ->where('nomor_label_tape', 'LIKE', '%' . $request->nomor_label_tape . '%')
+        ->where('jenis_tape', 'LIKE', '%' . $request->jenis_tape . '%')
+        ->where('lokasi_tape', 'LIKE', '%' . $request->lokasi_tape . '%')
+        ->where('kode_rak_tape', 'LIKE', '%' . $request->kode_rak_tape . '%')
+        ->leftJoin('master_lokasis', 'tapes.lokasi_tape', '=', 'master_lokasis.kode_lokasi')
+        ->leftJoin('master_raks', 'tapes.kode_rak_tape', '=', 'master_raks.kode_rak')
+        ->get();
+        $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
+        $raktape = master_rak::pluck('nomor_rak', 'kode_rak');
+        $lokasitape = master_lokasi::pluck('nama_lokasi', 'kode_lokasi');
+        return view('find', compact('found', 'jenistape', 'raktape', 'lokasitape'));
+    }
+
     /**
      * Display the specified resource.
      *
@@ -164,8 +191,10 @@ class TapeController extends Controller
 
     public function searchdata(Request $request)
     {
+        $this->validate($request, [
+            'search' => 'required',
+            ]);
         $searchdata = $request->input('search');
-        if(!empty($searchdata)){
         $found = DB::table('tapes')
         ->where('nomor_label_tape', 'LIKE', '%' . $searchdata . '%')
         ->orwhere('jenis_tape', 'LIKE', '%' . $searchdata . '%')
@@ -176,7 +205,6 @@ class TapeController extends Controller
         ->leftJoin('master_lokasis', 'tapes.lokasi_tape', '=', 'master_lokasis.kode_lokasi')
         ->leftJoin('master_raks', 'tapes.kode_rak_tape', '=', 'master_raks.kode_rak')
         ->get();
-        }
         $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
         $raktape = master_rak::pluck('nomor_rak', 'kode_rak');
         $lokasitape = master_lokasi::pluck('nama_lokasi', 'kode_lokasi');

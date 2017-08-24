@@ -28,6 +28,8 @@
         {!! Form::text('search',null, array('class'=>'form-control', 'placeholder'=>'Cari menurut nomor tape, jenis tape, kode rak, dll.')) !!}
     {!! Form::close()!!}
         <br>
+        <a href="/advancedsearch" class="btn btn-default"><i class="fa fa-search"></i> Advanced Search</a>
+        <br>
         <a class="btn btn-primary" data-toggle="modal" data-target="#myModal" href="#"><i class="fa fa-plus-circle"></i> Tambah Data</a>
         Jumlah Seluruh Tape : {{ $jumlahtotaltape }} &emsp; &emsp;
         Terpakai : {{ $jumlahtapeterpakai }} &emsp; &emsp;

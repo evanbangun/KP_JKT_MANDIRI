@@ -24,6 +24,8 @@ Route::get('/home', 'TapeController@index');
 
 Route::get('/tapekosong', 'TapeController@index2');
 
+Route::get('/advancedsearch', 'TapeController@advancedsearch');
+
 Route::get('/tambahtapekosong', 'TapeController@createtapekosong');
 
 Route::post('/tambahtapebatch','TapeController@storebatch');
@@ -35,3 +37,5 @@ Route::post('/tambahrak','TambahController@tambahrak');
 Route::post('/tambahjenistape','TambahController@tambahjenistape');
 
 Route::get('/searchdata', 'TapeController@searchdata');
+
+Route::post('/advsearchdata', 'TapeController@advsearchdata');

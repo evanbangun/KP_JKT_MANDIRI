@@ -19,6 +19,8 @@
         {!! Form::text('search',null, array('class'=>'form-control', 'placeholder'=>'Cari menurut nomor tape, jenis tape, kode rak, dll.')) !!}
     {!! Form::close()!!}
         <br>
+        <a href="/advancedsearch" class="btn btn-default"><i class="fa fa-search"></i> Advanced Search</a>
+        <br>
         @if(count($found))
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover table-condensed tfix">
@@ -38,9 +40,7 @@
                            <td>{{ $f->status_tape }}</td>
                            <td>
                            @if($f->digunakan_tape == 1)
-                           {
                               {{ $f->nama_lokasi }}, Rak {{ $f->nomor_rak }}, Lapis {{ $f->lapis_tape }}, Baris {{ $f->baris_tape }}, Slot {{ $f->slot_tape }}
-                           }
                            </td>
                            @endif
                            <td>{{ $f->keterangan_tape }}</td>
