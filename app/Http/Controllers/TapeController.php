@@ -8,6 +8,7 @@ use App\tape;
 use App\master_rak;
 use App\master_jenis_tape;
 use App\master_lokasi;
+use App\tiket;
 use DB;
 
 class TapeController extends Controller
@@ -165,6 +166,29 @@ class TapeController extends Controller
         $raktape = master_rak::pluck('nomor_rak', 'kode_rak');
         $lokasitape = master_lokasi::pluck('nama_lokasi', 'kode_lokasi');
         return view('find', compact('found', 'jenistape', 'raktape', 'lokasitape'));
+    }
+
+    public function tambahticket()
+    {
+      
+        return view ('tambahticket');
+    }
+
+     public function tiket()
+    {
+       // $tiket= DB::table('tikets')->get();
+
+       $tiket = DB::select("select no_tiket,Email,FullName,TicketSource,HelpTopic,Departement,SLAplan,DueDate,IssueSummary,IssueDetails, file , Priority ,PeriodeWaktu,jumlahFile,DataSource,CASE WHEN status=0 THEN 'Open'  ELSE 'Close' END as status
+          from tikets");
+
+        return view ('daftartiket',compact('tiket'));
+    }
+
+    public function storetiket(Request $request)
+    {
+            tiket::create($request->all());
+           
+           return redirect('/daftartiket');
     }
 
     /**

@@ -42,16 +42,16 @@
                 <li class=""><a href="/tapekosong">Kosong</a></li>
               </ul>
             </li>
-            <li class="tm nav-parent"><a href="/daftartiket"><span>Ticket</span></a>
+            <li class="tm nav-parent active"><a href="/daftartiket"><span>Ticket</span></a>
               <ul class="children collapse">  
                 <li class=""><a href="/daftartiket">Daftar Tiket</a></li>
                 <li class=""><a href="/tambahtiket">Tambah Tiket</a></li>
               </ul>
             </li>
-            <li class="tm active">
-              <a href="daftar"><span>Daftar Lokasi dan Rak</span> <span class="fa arrow active"></span></a>
+            <li class="tm">
+              <a href="daftar "><span>Daftar Lokasi dan Rak</span> <span class="fa arrow active"></span></a>
             </li>
-            <li class="tm nav-parent"><a href=""><span>Form</span></a>
+            <li class="tm nav-parent "><a href=""><span>Form</span></a>
               <ul class="children collapse">
                 <li class=""><a href="/peminjaman/create">Peminjaman</a></li>
                 <li class=""><a href="/">Pengembalian</a></li>

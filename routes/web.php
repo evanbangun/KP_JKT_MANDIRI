@@ -39,3 +39,9 @@ Route::post('/tambahjenistape','TambahController@tambahjenistape');
 Route::get('/searchdata', 'TapeController@searchdata');
 
 Route::post('/advsearchdata', 'TapeController@advsearchdata');
+
+Route::get('/tambahtiket','TapeController@tambahticket');
+
+Route::get('/daftartiket', 'TapeController@tiket');
+
+Route::post('/tiket','TapeController@storetiket');
