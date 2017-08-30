@@ -15,16 +15,18 @@ class CreateTapeTable extends Migration
     {
         Schema::create('tapes', function (Blueprint $table) {
             //$table->increments('id');
-            $table->string('nomor_label_tape',10);
+            $table->string('nomor_label_tape',100);
             $table->primary('nomor_label_tape');
-            $table->string('jenis_tape', 10);
-            $table->string('status_tape', 1024)->default('Ada di warehouse');
-            $table->integer('lokasi_tape', false, true);
+            $table->string('jenis_tape', 100);
+            $table->string('status_tape', 100)->default('Ada di warehouse');
+            $table->string('lokasi_tape', 5);
+            $table->string('bulan', 20)->nullable();
+            $table->string('tahun', 20)->nullable();
             $table->integer('kode_rak_tape', false, true)->nullable();
             $table->integer('lapis_tape', false, true)->nullable();
             $table->integer('baris_tape', false, true)->nullable();
             $table->integer('slot_tape', false, true)->nullable();
-            $table->string('keterangan_tape',1024)->nullable();
+            $table->string('keterangan_tape',2048)->nullable();
             $table->integer('digunakan_tape', false, true)->default(0);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
@@ -59,6 +61,6 @@ class CreateTapeTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('tapes');
     }
 }

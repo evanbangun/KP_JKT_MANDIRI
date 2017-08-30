@@ -42,27 +42,27 @@
                 <li class=""><a href="/tapekosong">Kosong</a></li>
               </ul>
             </li>
-            <li class="tm nav-parent"><a ><span>Ticket</span></a>
+            <li class="tm nav-parent "><a ><span>Ticket</span></a>
               <ul class="children collapse">  
                 <li class=""><a href="/daftartiket">Daftar Tiket</a></li>
                 <li class=""><a href="/tambahtiket">Tambah Tiket</a></li>
               </ul>
             </li>
-            <li class="tm nav-parent active"><a ><span>Detail</span></a>
+            <li class="tm nav-parent"><a ><span>Detail</span></a>
               <ul class="children collapse">  
                 <li class=""><a href="/daftarlokasi">Lokasi</a></li>
                 <li class=""><a href="/daftarrak">Rak</a></li>
                 <li class=""><a href="/daftarjenistape">Tape</a></li>
               </ul>
             </li>
-            <li class="tm nav-parent"><a ><span>Activity</span></a>
+            <li class="tm nav-parent active"><a ><span>Activity</span></a>
               <ul class="children collapse">  
                 <li class=""><a href="/stockopname">Stock Opname</a></li>
                 <li class=""><a href="/movingtape">Moving Tape</a></li>
                 <li class=""><a href="/testingtape">Testing Tape</a></li>
               </ul>
             </li>
-            <!-- <li class="tm nav-parent"><a href=""><span>Form</span></a>
+            <!-- <li class="tm nav-parent "><a href=""><span>Form</span></a>
               <ul class="children collapse">
                 <li class=""><a href="/peminjaman/create">Peminjaman</a></li>
                 <li class=""><a href="/">Pengembalian</a></li>

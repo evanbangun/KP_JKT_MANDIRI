@@ -25,7 +25,7 @@
                        <tr>
                            <td><b>Nomor Tape</b></td>
                            <td><b>Jenis Tape</b></td>
-                           <td><b>Lokasi Rak</b></td>
+                           <td><b>Lokasi Tape</b></td>
                        </tr>
                    </thead>
                    @foreach($tape as $t)

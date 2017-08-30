@@ -36,27 +36,38 @@
             <span>MAIN MENU</span>
           </div>
           <ul class="nav nav-sidebar">
-            <li class="tm nav-parent "><a href="/tape"><span>Daftar Tape</span></a>
+            <li class="tm nav-parent "><a ><span>Daftar Tape</span></a>
               <ul class="children collapse">
                 <li class=""><a href="/tape">Terpakai</a></li>
                 <li class=""><a href="/tapekosong">Kosong</a></li>
               </ul>
             </li>
-            <li class="tm nav-parent active"><a href="/daftartiket"><span>Ticket</span></a>
+            <li class="tm nav-parent active"><a ><span>Ticket</span></a>
               <ul class="children collapse">  
                 <li class=""><a href="/daftartiket">Daftar Tiket</a></li>
                 <li class=""><a href="/tambahtiket">Tambah Tiket</a></li>
               </ul>
             </li>
-            <li class="tm">
-              <a href="daftar "><span>Daftar Lokasi dan Rak</span> <span class="fa arrow active"></span></a>
+            <li class="tm nav-parent"><a ><span>Detail</span></a>
+              <ul class="children collapse">  
+                <li class=""><a href="/daftarlokasi">Lokasi</a></li>
+                <li class=""><a href="/daftarrak">Rak</a></li>
+                <li class=""><a href="/daftarjenistape">Tape</a></li>
+              </ul>
             </li>
-            <li class="tm nav-parent "><a href=""><span>Form</span></a>
+            <li class="tm nav-parent"><a ><span>Activity</span></a>
+              <ul class="children collapse">  
+                <li class=""><a href="/stockopname">Stock Opname</a></li>
+                <li class=""><a href="/movingtape">Moving Tape</a></li>
+                <li class=""><a href="/testingtape">Testing Tape</a></li>
+              </ul>
+            </li>
+            <!-- <li class="tm nav-parent "><a href=""><span>Form</span></a>
               <ul class="children collapse">
                 <li class=""><a href="/peminjaman/create">Peminjaman</a></li>
                 <li class=""><a href="/">Pengembalian</a></li>
               </ul>
-            </li>
+            </li> -->
           </ul>
           <div class="sidebar-widgets"></div>
           <!-- <div class="sidebar-footer clearfix" style="">

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class master_lokasi extends Model
 {
-	public $incrementing = true;
+	public $incrementing = false;
     protected $primaryKey = 'kode_lokasi';
-    protected $fillable = ['nama_lokasi'];
+    protected $fillable = ['kode_lokasi', 'nama_lokasi'];
 }

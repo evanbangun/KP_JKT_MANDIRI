@@ -16,7 +16,6 @@
     <div class="panel-body">
 	     <br>
         <div>
-         
           <div style="float:left; margin:0px">
            <!--  <a class="btn btn-primary" data-toggle="modal" data-target="#myModal2" href="#"><i class="fa fa-plus-circle"></i> Tambah Rak</a> -->
             <table style="width: 100%" class="table table-bordered table-striped table-hover table-condensed tfix">
@@ -26,8 +25,6 @@
                            <td><b>From</b></td>
                            <td><b>Help Topic</b></td>
                            <td><b>Department</b></td>
-                           
-                           
                            <td><b>Due Date</b></td>
                            <td><b>Issue Summary</b></td>
                            <td><b>Issue Details</b></td>
@@ -53,8 +50,9 @@
                            <td>{{ $t->Priority }}</td>
                            <td>{{ $t->PeriodeWaktu}}</td>
                            <td>{{ $t->status}}</td>
+                           
+                           <td>{{ Form::button('Download')}}</td>
 
-                           <td>
                            
                        </tr>
                    @endforeach

@@ -17,9 +17,10 @@ class CreateMasterRakTable extends Migration
         Schema::create('master_raks', function (Blueprint $table) {
             //$table->increments('id');
             $table->increments('kode_rak');
-            $table->integer('lokasi_rak', false, true)->unsigned();
+            $table->string('lokasi_rak', 5);
             $table->string('nomor_rak', 100);
-            $table->string('jenis_tape_rak', 10);
+            $table->string('jenis_tape_rak', 100);
+            $table->integer('kapasitas_rak', false, true);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
@@ -46,6 +47,6 @@ class CreateMasterRakTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('master_raks');
     }
 }

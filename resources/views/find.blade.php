@@ -30,7 +30,7 @@
                            <td><b>Jenis Tape</b></td>
                            <td><b>Status</b></td>
                            <td><b>Lokasi Rak</b></td>
-                           <td><b>Keterangan</b></td>
+                           <td><b>Backup</b></td>
                        </tr>
                    </thead>
                    @foreach($found as $f)
@@ -41,9 +41,11 @@
                            <td>
                            @if($f->digunakan_tape == 1)
                               {{ $f->nama_lokasi }}, Rak {{ $f->nomor_rak }}, Lapis {{ $f->lapis_tape }}, Baris {{ $f->baris_tape }}, Slot {{ $f->slot_tape }}
+                           @elseif($f->digunakan_tape == 0)
+                              {{ $f->nama_lokasi }}
                            </td>
                            @endif
-                           <td>{{ $f->keterangan_tape }}</td>
+                           <td>{{ $f->bulan }} {{ $f->tahun }}</td>
                        </tr>
                    @endforeach
               </table>

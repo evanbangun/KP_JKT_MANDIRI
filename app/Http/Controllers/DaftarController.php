@@ -12,15 +12,35 @@ class DaftarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexlokasi()
     {
+        $jenistape = DB::table('master_jenis_tapes')->get();
         $lokasi = DB::table('master_lokasis')->get();
+        $rakperlokasi = DB::table('master_raks')->selectRaw('lokasi_rak, count(*) as jumlah_rak')->groupBy('lokasi_rak')->get();
+        $tapeperlokasi = DB::table('tapes')->selectRaw('lokasi_tape, count(*) as jumlah_tape')->groupBy('lokasi_tape')->get();
+        return view ('daftarlokasi',compact('lokasi', 'rakperlokasi', 'tapeperlokasi'));
+    }
+
+    public function indexrak()
+    {
+        $jenistape = DB::table('master_jenis_tapes')->get();
+        $tapeperrak = DB::table('tapes')->selectRaw('kode_rak_tape as krt, count(*) as jumlah_tape')->groupBy('kode_rak_tape')->get();
+        $totaltape = DB::table('tapes')->selectRaw('jenis_tape, count(*) as jumlah_tape')->groupBy('jenis_tape')->get();
+        $listlokasi = DB::table('master_lokasis')->pluck('nama_lokasi', 'kode_lokasi');
+        $lokasi = DB::table('master_lokasis')->get();
+        $listjenis = DB::table('master_jenis_tapes')->pluck('nomor_jenis', 'nomor_jenis');
         $rak = DB::table('master_raks')->leftJoin('master_lokasis', 'master_raks.lokasi_rak', '=', 'master_lokasis.kode_lokasi')
                                        ->get();
+        return view ('daftarrak',compact('rak', 'jenistape', 'listlokasi', 'listjenis', 'tapeperrak', 'totaltape', 'lokasi'));
+    }
+
+    public function indextape()
+    {
         $jenistape = DB::table('master_jenis_tapes')->get();
-        $listlokasi = DB::table('master_lokasis')->pluck('nama_lokasi', 'kode_lokasi');
-        $listjenis = DB::table('master_jenis_tapes')->pluck('nomor_jenis', 'nomor_jenis');
-        return view ('daftar',compact('lokasi', 'jenistape', 'rak', 'listlokasi', 'listjenis'));
+        $tapeterpakai = DB::table('tapes')->selectRaw('jenis_tape, count(*) as jumlah_tape')->where('digunakan_tape', '=', '1')->groupBy('jenis_tape')->get();
+        $tapekosong = DB::table('tapes')->selectRaw('jenis_tape, count(*) as jumlah_tape')->where('digunakan_tape', '=', '0')->groupBy('jenis_tape')->get();
+        $totaltape = DB::table('tapes')->selectRaw('jenis_tape, count(*) as jumlah_tape')->groupBy('jenis_tape')->get();
+        return view ('daftarjenistape',compact('jenistape', 'tapeterpakai', 'tapekosong', 'totaltape'));
     }
 
     /**

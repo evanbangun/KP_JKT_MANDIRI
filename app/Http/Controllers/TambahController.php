@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\master_rak;
 use App\master_jenis_tape;
 use App\master_lokasi;
+use DB;
 
 class TambahController extends Controller
 {
@@ -42,20 +43,34 @@ class TambahController extends Controller
 
     public function tambahlokasi(Request $request)
     {
-        master_lokasi::create($request->all());
-        return redirect('/daftar');
+        $lokasi = new master_lokasi;
+        $lokasi->kode_lokasi = strtoupper($request->kode_lokasi);
+        $lokasi->nama_lokasi = $request->nama_lokasi;
+        $lokasi->save();
+        return redirect('/daftarlokasi');
     }
 
     public function tambahrak(Request $request)
     {
-        master_rak::create($request->all());
-        return redirect('/daftar');
+        $countrak = DB::table('master_raks')->selectRaw('count(*) as jumlah_rak')->where('lokasi_rak', '=', $request->lokasi_rak)->get();    
+        $indexrak = $countrak{0}->jumlah_rak + 1;
+        if($indexrak < 10)
+        {
+            $indexrak = "0".$indexrak;
+        }
+        $rak = new master_rak;
+        $rak->lokasi_rak = $request->lokasi_rak;
+        $rak->nomor_rak = $request->lokasi_rak.'-'.$indexrak;
+        $rak->jenis_tape_rak = $request->jenis_tape_rak;
+        $rak->kapasitas_rak = $request->kapasitas_rak;
+        $rak->save();
+        return redirect('/daftarrak');
     }
 
     public function tambahjenistape(Request $request)
     {
         master_jenis_tape::create($request->all());
-        return redirect('/daftar');
+        return redirect('/daftarjenistape');
     }
 
     /**

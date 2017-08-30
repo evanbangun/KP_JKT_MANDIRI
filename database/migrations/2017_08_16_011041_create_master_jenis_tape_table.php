@@ -16,7 +16,7 @@ class CreateMasterJenisTapeTable extends Migration
     {
         Schema::create('master_jenis_tapes', function (Blueprint $table) {
             //$table->increments('id');
-            $table->string('nomor_jenis',10);
+            $table->string('nomor_jenis',100);
             $table->primary('nomor_jenis');
             $table->string('nama_jenis',100)->index();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
@@ -31,6 +31,6 @@ class CreateMasterJenisTapeTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('master_jenis_tapes');
     }
 }

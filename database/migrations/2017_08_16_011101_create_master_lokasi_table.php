@@ -16,8 +16,9 @@ class CreateMasterLokasiTable extends Migration
     {
         Schema::create('master_lokasis', function (Blueprint $table) {
             //$table->increments('id');
-            $table->increments('kode_lokasi');
-            $table->string('nama_lokasi', 1024);
+            $table->string('kode_lokasi', 5);
+            $table->primary('kode_lokasi');
+            $table->string('nama_lokasi', 100);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
@@ -30,6 +31,6 @@ class CreateMasterLokasiTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('master_lokasis');
     }
 }
