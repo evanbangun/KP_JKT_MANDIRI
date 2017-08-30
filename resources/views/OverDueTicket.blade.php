@@ -1,14 +1,14 @@
 @extends('apppeminjaman')
 @section('title')
-    Daftar Tiket
+    Daftar Over Due Tiket
 @endsection
 
 @section('smallcontent-header')
-    Tiket/Daftar Tiket 
+     Daftar Over Due Tiket
 @endsection
 
 @section('content-header')
-    Daftar Tiket
+     Daftar Over Due Tiket
 @endsection
 
 @section('content')	
@@ -55,7 +55,7 @@
                        </tr>
                    @endforeach
                   
-            </table>   
+            </table>    
           </div>
       
         </div>

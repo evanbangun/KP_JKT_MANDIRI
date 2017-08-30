@@ -11,6 +11,7 @@ use App\master_rak;
 use App\master_jenis_tape;
 use App\master_lokasi;
 use App\tiket;
+use App\peminjaman;
 use DB;
 
 class TapeController extends Controller
@@ -333,12 +334,14 @@ class TapeController extends Controller
         return view ('tambahticket');
     }
 
-     public function tiket()
+    public function tiket()
     {
        // $tiket= DB::table('tikets')->get();
 
-       $tiket = DB::select("select no_tiket,Email,FullName,TicketSource,HelpTopic,Departement,SLAplan,DueDate,IssueSummary,IssueDetails, file , Priority ,PeriodeWaktu,jumlahFile,DataSource,CASE WHEN status=0 THEN 'Open'  ELSE 'Close' END as status
-          from tikets");
+        $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Open Ticket' WHEN status=2 THEN 'Closed Ticket'   ELSE 'Over Due Ticket' END as status
+                             from peminjamen p 
+                             left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
+                             left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan");
 
         return view ('daftartiket',compact('tiket'));
     }

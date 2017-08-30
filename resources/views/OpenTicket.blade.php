@@ -1,14 +1,14 @@
 @extends('apppeminjaman')
 @section('title')
-    Daftar Tiket
+    Open Ticket
 @endsection
 
 @section('smallcontent-header')
-    Tiket/Daftar Tiket 
+    Open Ticket
 @endsection
 
 @section('content-header')
-    Daftar Tiket
+    Daftar Open Tiket
 @endsection
 
 @section('content')	
@@ -22,10 +22,10 @@
             <table style="width: 100%" class="table table-bordered table-striped table-hover table-condensed tfix">
                     <thead align="center">
                        <tr>
-                           <td><b>No Tiket</b></td>
+                          <td><b>No Tiket</b></td>
                            <td><b>No Label Tape</b></td>
                            <td><b>Lokasi Sumber Tape</b></td>
-                           <td><b>Lokasi Tujuan Tape</b></td>
+                           <td><b>Lokasi Tujuan Tape</b></td> 
                            <td><b>Tanggal Akhir Peminjaman</b></td>
                            
                            
@@ -33,13 +33,13 @@
                            <td><b>Status</b></td>
                            <td><b>Data Created</b></td>
                            <td><b>Data Updated</b></td>
-                           
+                           <td><b>Action</b></td>
                            
                        </tr>
                    </thead>
                      @foreach($tiket as $t)
                        <tr>
-                           <td>{{ $t->no_tiket}}</td>
+                          <td>{{ $t->no_tiket}}</td>
                            <td>{{ $t->nomor_label_tape }}</td>
                            <td>{{ $t->Sumber}}</td>
                            <td>{{ $t->Tujuan}}</td>
@@ -49,8 +49,7 @@
                            <td>{{ $t->status }}</td>
                            <td>{{ $t->created_at}}</td>
                            <td>{{ $t->updated_at}}</td>
-                           
-
+                           <td><a href = '/updatedopen/{{ $t->no_tiket}}'> Open Ticket</a></td>
                            
                        </tr>
                    @endforeach
@@ -64,7 +63,7 @@
     
      
     <!-- Modal -->
-   
+
     <!-- Modal -->
     
 @endsection

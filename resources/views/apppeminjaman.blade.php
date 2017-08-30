@@ -42,10 +42,13 @@
                 <li class=""><a href="/tapekosong">Kosong</a></li>
               </ul>
             </li>
-            <li class="tm nav-parent active"><a ><span>Ticket</span></a>
+            <li class="tm nav-parent active"><a ><span>Peminjaman</span></a>
               <ul class="children collapse">  
-                <li class=""><a href="/daftartiket">Daftar Tiket</a></li>
-                <li class=""><a href="/tambahtiket">Tambah Tiket</a></li>
+                <li class=""><a href="/daftartiket">List Ticket</a></li>
+                <li class=""><a href="/tambahtiket">New Ticket</a></li>
+                <li class=""><a href="/openticket">Open Ticket</a></li>
+                <li class=""><a href="/closedticket">Closed Ticket</a></li>
+                <li class=""><a href="/overdueticket">Over Due Ticket</a></li>
               </ul>
             </li>
             <li class="tm nav-parent"><a ><span>Detail</span></a>

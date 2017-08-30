@@ -69,3 +69,19 @@ Route::post('/konfirmasitesting','ActivityController@konfirmasitesting');
 Route::get('/edittest/{ktt}','ActivityController@edittest');
 
 Route::post('/updatetesting','ActivityController@updatetesting');
+
+Route::get('/openticket', 'DaftarController@open');
+
+Route::get('/closedticket', 'DaftarController@closed');
+
+Route::get('/overdueticket', 'DaftarController@overdue');
+
+Route::get('/tambahtiket','DaftarController@peminjaman');
+
+Route::get('/daftartiket', 'TapeController@tiket');
+
+Route::post('/postpeminjaman','DaftarController@storepeminjaman');
+
+Route::get('/updatedopen/{id}','DaftarController@edit');
+
+Route::get('/closetick/{id}','DaftarController@editclose');
