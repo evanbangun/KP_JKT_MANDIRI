@@ -23,7 +23,7 @@
                     <thead align="center">
                        <tr>
                            <td><b>No Tiket</b></td>
-                           <td><b>No Label Tape</b></td>
+                           <!-- <td><b>No Label Tape</b></td> -->
                            <td><b>Lokasi Sumber Tape</b></td>
                            <td><b>Lokasi Tujuan Tape</b></td>
                            <td><b>Tanggal Akhir Peminjaman</b></td>
@@ -39,8 +39,8 @@
                    </thead>
                      @foreach($tiket as $t)
                        <tr>
-                           <td>{{ $t->no_tiket}}</td>
-                           <td>{{ $t->nomor_label_tape }}</td>
+                           <td><a>{{ $t->no_tiket}}</a></td>
+                           <!-- <td>{{ $t->nomor_label_tape }}</td> -->
                            <td>{{ $t->Sumber}}</td>
                            <td>{{ $t->Tujuan}}</td>
                            <td>{{ $t->lama_peminjaman }}</td>

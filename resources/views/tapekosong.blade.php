@@ -33,7 +33,8 @@
                            <td>{{ $t->nomor_label_tape }}</td>
                            <td>{{ $t->jenis_tape }}</td>
                            <td>{{ $t->nama_lokasi }}</td>
-                       </tr>
+                           <td align="center"><a href="/tapeedit/{{$t->nomor_label_tape}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&emsp;<a href="/tapedelete/{{$t->nomor_label_tape}}"><i class="fa fa-times-circle" aria-hidden="true"></i></a></td>
+                      </tr>
                    @endforeach
               </table>
           </div>

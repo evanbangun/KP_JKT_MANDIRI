@@ -26,11 +26,14 @@ class TapeController extends Controller
         $tape = DB::table('tapes')->leftJoin('master_lokasis', 'tapes.lokasi_tape', '=', 'master_lokasis.kode_lokasi')
                                   ->leftJoin('master_raks', 'tapes.kode_rak_tape', '=', 'master_raks.kode_rak')
                                   ->where('digunakan_tape', '=', '1')
+                                  ->orderByRaw('LENGTH(nomor_label_tape), nomor_label_tape')
+                                  // ->orderBy('nomor_rak')
+                                  // ->orderBy('slot_tape')
                                   ->get();
         $jumlahtotaltape = DB::table('tapes')->count();
         $jumlahtapeterpakai = DB::table('tapes')->where('digunakan_tape', '=', '1')
                                                 ->count();
-        return view ('home',compact('tape', 'jumlahtotaltape', 'jumlahtapeterpakai'));
+        return view ('daftartape',compact('tape', 'jumlahtotaltape', 'jumlahtapeterpakai'));
     }
 
     public function index2()
@@ -75,12 +78,7 @@ class TapeController extends Controller
             'jenis_tape' => 'required',
             'status_tape' => 'required',
             'lokasi_tape' => 'required',
-            // 'kode_rak_tape' => 'required',
-            // 'lapis_tape' => 'required',
-            // 'baris_tape' => 'required',
-            // 'slot_tape' => 'required',
-            'bulan' => 'required',
-            'tahun' => 'required',
+            'bulan_tahun' => 'required',
             ]);
 
             $arrlabel = preg_split("/[\s,]+/", $request->nomor_label_tape);
@@ -103,13 +101,54 @@ class TapeController extends Controller
                 }
                 else
                 {
-                    $rak_pilihan = $check{0}->kode_rak;
+                    // $rak_pilihan = $check{0}->kode_rak;
+                    // $kapasitas_rak = $check{0}->kapasitas_rak;
+                    $full=true;
+                    foreach ($check as $c)
+                    {
+                        $cekkapasitas = DB::table('tapes')->where('kode_rak_tape', '=', $c->kode_rak)
+                                                          ->get();
+                        if($cekkapasitas->count() < $c->kapasitas_rak)
+                        {
+                             $rak_pilihan = $c->kode_rak;
+                             $kapasitas_rak = $c->kapasitas_rak;
+                             $full=false;
+                             break;
+                        }
+                    }
+                    if($full)
+                    {
+                        return redirect('/daftartape')->withErrors(['Some tape is not stored due to lack of spaces in all the racks']);
+                    }
                 }   
                 
-                $counttape = DB::table('tapes')->selectRaw('count(*) as jumlah_tape')->where('kode_rak_tape', $rak_pilihan)->get();        
-                if($counttape->count())
+                $check = DB::table('tapes')->where('kode_rak_tape', $rak_pilihan)->orderBy('slot_tape')
+                                                                                 ->get();        
+                if($check->count())
                 {
-                    $jlhtape = $counttape{0}->jumlah_tape + 1;
+                    if($check->count() < $kapasitas_rak)
+                    {
+                        $i=1;
+                        $new = true;
+                        foreach ($check as $c)
+                        {
+                            if($c->slot_tape != $i)
+                            {
+                                $jlhtape = $i;
+                                $new = false;
+                                break;
+                            }
+                            $i++;
+                        }
+                        if($new)
+                        {
+                            $jlhtape = $check->count() + 1;
+                        }
+                    }
+                    else
+                    {
+                        return redirect('/tape/create')->withErrors(['Rack '+ $request->jenis_tape +' is already full']);
+                    }
                 }
                 else
                 {
@@ -117,7 +156,8 @@ class TapeController extends Controller
                 }
 
                 $check = DB::table('tapes')->where('digunakan_tape', '=', '0')
-                                            ->where('nomor_label_tape', '=', $nlt);
+                                           ->where('nomor_label_tape', '=', $nlt)
+                                           ->get();
                 if($check->count())
                 {
                     tape::where('nomor_label_tape', $nlt)->delete();
@@ -127,24 +167,19 @@ class TapeController extends Controller
                 $tape->nomor_label_tape = $nlt;
                 $tape->lokasi_tape = $request->lokasi_tape;
                 $tape->kode_rak_tape = $rak_pilihan;
-                $tape->lapis_tape = 1;
-                $tape->baris_tape = 1;
                 $tape->slot_tape = $jlhtape;
                 $tape->jenis_tape = $request->jenis_tape;
-                $tape->bulan = $request->bulan;
-                $tape->tahun = $request->tahun;
+                $tape->bulan_tahun = $request->bulan_tahun;
                 $tape->digunakan_tape = 1;
                 if($nlt != '')
                 {       
                     $tape->save();   
                 }
             }
-            return redirect('/');
+            return redirect('/daftartape');
 
             // $check = DB::table('tapes')->where('lokasi_tape', '=', $request->lokasi_tape)
             //                            ->where('kode_rak_tape', '=', $request->kode_rak_tape)
-            //                            ->where('lapis_tape', '=', $request->lapis_tape)
-            //                            ->where('baris_tape', '=', $request->baris_tape)
             //                            ->where('slot_tape', '=', $request->slot_tape);
             // if ($check->count())
             // {
@@ -173,13 +208,11 @@ class TapeController extends Controller
             // $tape->bulan = $request->bulan;
             // $tape->tahun = $request->tahun;
             // $tape->kode_rak_tape = $request->kode_rak_tape;
-            // $tape->lapis_tape = $request->lapis_tape;
-            // $tape->baris_tape = $request->baris_tape;
             // $tape->slot_tape = $request->slot_tape;
             // $tape->keterangan_tape = $request->keterangan_tape;
             // $tape->digunakan_tape = $request->digunakan_tape;
             // tape::create($request->all());
-            // return redirect('/');
+            // return redirect('/daftartape');
         }
         // else if($request->digunakan_tape == 0)
         // {
@@ -224,11 +257,8 @@ class TapeController extends Controller
         $raktape->prepend('All', '');
         $lokasitape = master_lokasi::pluck('nama_lokasi', 'kode_lokasi');
         $lokasitape->prepend('All', '');
-        $bulantape = tape::pluck('bulan', 'bulan');
-        $bulantape->prepend('All', '');
-        $tahuntape = tape::pluck('tahun', 'tahun');
-        $tahuntape->prepend('All', '');
-        return view('advancedsearch', compact('jenistape', 'raktape', 'lokasitape','tahuntape','bulantape'));
+        $bulantahuntape = tape::pluck('bulan_tahun', 'bulan_tahun');
+        return view('advancedsearch', compact('jenistape', 'raktape', 'lokasitape','bulan_tahun'));
     }
 
     public function advsearchdatabc(Request $request)
@@ -238,10 +268,11 @@ class TapeController extends Controller
         ->where('jenis_tape', 'LIKE', '%' . $request->jenis_tape . '%')
         ->where('lokasi_tape', 'LIKE', '%' . $request->lokasi_tape . '%')
         ->where('kode_rak_tape', 'LIKE', '%' . $request->kode_rak_tape . '%')
-        ->where('bulan', 'LIKE', '%' . $request->bulan . '%')
-        ->where('tahun', 'LIKE', '%' . $request->tahun . '%')
+        ->where('bulan_tahun', 'LIKE', '%' . $request->bulan_tahun . '%')
         ->leftJoin('master_lokasis', 'tapes.lokasi_tape', '=', 'master_lokasis.kode_lokasi')
         ->leftJoin('master_raks', 'tapes.kode_rak_tape', '=', 'master_raks.kode_rak')
+        ->orderBy('nomor_rak')
+        ->orderBy('slot_tape')
         ->get();
         $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
         $raktape = master_rak::pluck('nomor_rak', 'kode_rak');
@@ -324,6 +355,8 @@ class TapeController extends Controller
         ->where('nama_lokasi', 'LIKE', $selectlokasi)
         ->where('nomor_rak', 'LIKE', $selectrak)
         ->where('tahun', 'LIKE', $selecttahun)
+        ->orderBy('nomor_rak')
+        ->orderBy('slot_tape')
         ->get();
         return view('find', compact('found'));
     }
@@ -341,7 +374,8 @@ class TapeController extends Controller
         $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Open Ticket' WHEN status=2 THEN 'Closed Ticket'   ELSE 'Over Due Ticket' END as status
                              from peminjamen p 
                              left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
-                             left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan");
+                             left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan
+                             GROUP BY no_tiket");
 
         return view ('daftartiket',compact('tiket'));
     }
@@ -355,15 +389,82 @@ class TapeController extends Controller
            return redirect('/daftartiket');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function tapeedit($nlt)
     {
-        //
+        $datatape = DB::table('tapes')->where('nomor_label_tape', $nlt)
+                                      ->first();
+        $listlokasi = DB::table('master_lokasis')->pluck('nama_lokasi', 'kode_lokasi');
+        $listjenis = DB::table('master_jenis_tapes')->pluck('nomor_jenis', 'nomor_jenis');
+        $listrak = DB::table('master_raks')->pluck('nomor_rak', 'kode_rak');
+        
+        return view ('/tapeedit',compact('datatape', 'listlokasi', 'listjenis', 'listrak'));
+    }
+
+    public function tapeupdate(Request $request, $nlt)
+    {
+        if($request->digunakan_tape == 0)
+        {
+             DB::table('tapes')->where('nomor_label_tape', $nlt)
+                               ->update(['nomor_label_tape' => $request->nomor_label_tape,
+                                         'bulan_tahun' => '',
+                                         'keterangan_tape' => $request->keterangan_tape,
+                                         'digunakan_tape' => $request->digunakan_tape,
+                                         'slot_tape' => '',
+                                         'kode_rak_tape' => NULL,
+                                         'lokasi_tape' => $request->lokasi_tape,
+                                         'status_tape' => $request->status_tape,
+                                         'jenis_tape' => $request->jenis_tape]);
+            return redirect('/tapekosong');
+        }
+        if($request->digunakan_tape == 1)
+        {
+            if($request->kode_rak_tape != NULL AND $request->lokasi_tape != '' AND $request->jenis_tape != '' )
+            {
+                $check = DB::table('master_raks')->where('kode_rak', $request->kode_rak_tape)
+                                                 ->where('lokasi_rak', $request->lokasi_tape)
+                                                 ->where('jenis_tape_rak', $request->jenis_tape)
+                                                 ->get();
+                if($check->count() == 0)
+                {
+                    $msg = 'Error location input';
+                    return redirect('/tapeedit/'.$nlt)->withErrors([$msg]);
+                }
+            }
+            $check = DB::table('tapes')->where('nomor_label_tape', $request->nomor_label_tape)
+                                       ->get();
+            if($check->count())
+            {
+                $msg = $request->nomor_label_tape.' already exist';
+                return redirect('/tapeedit/'.$nlt)->withErrors([$msg]);
+            }
+            DB::table('tapes')->where('nomor_label_tape', $nlt)
+                               ->update(['nomor_label_tape' => $request->nomor_label_tape,
+                                         'bulan_tahun' => $request->bulan_tahun,
+                                         'keterangan_tape' => $request->keterangan_tape,
+                                         'digunakan_tape' => $request->digunakan_tape,
+                                         'slot_tape' => $request->slot_tape,
+                                         'kode_rak_tape' => $request->kode_rak_tape,
+                                         'lokasi_tape' => $request->lokasi_tape,
+                                         'status_tape' => $request->status_tape,
+                                         'jenis_tape' => $request->jenis_tape]);
+            return redirect('/daftartape');
+        }
+    }
+
+    public function tapedelete($nlt)
+    {
+        $tapes = new tape();
+        $datatape = DB::table('tapes')->where('nomor_label_tape', $nlt)
+                                      ->first();
+        $tapes->destroy($nlt);
+        if($datatape->digunakan_tape == 1)
+        {
+            return redirect('/daftartape');
+        }
+        else
+        {
+            return redirect('/tapekosong');
+        }
     }
 
     /**
@@ -390,10 +491,11 @@ class TapeController extends Controller
         ->orwhere('lokasi_tape', 'LIKE', '%' . $searchdata . '%')
         ->orwhere('kode_rak_tape', 'LIKE', '%' . $searchdata . '%')
         ->orwhere('keterangan_tape', 'LIKE', '%' . $searchdata . '%')
-        ->orwhere('bulan', 'LIKE', '%' . $searchdata . '%')
-        ->orwhere('tahun', 'LIKE', '%' . $searchdata . '%')
+        ->orwhere('bulan_tahun', 'LIKE', '%' . $searchdata . '%')
         ->leftJoin('master_lokasis', 'tapes.lokasi_tape', '=', 'master_lokasis.kode_lokasi')
         ->leftJoin('master_raks', 'tapes.kode_rak_tape', '=', 'master_raks.kode_rak')
+        ->orderBy('nomor_rak')
+        ->orderBy('slot_tape')
         ->get();
         $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
         $raktape = master_rak::pluck('nomor_rak', 'kode_rak');

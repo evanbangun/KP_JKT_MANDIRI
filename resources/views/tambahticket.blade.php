@@ -15,21 +15,15 @@
   <div class="panel panel-default">
     <div class="panel-body">
       {!! Form::open(array('url' => '/postpeminjaman')) !!}
-      <div class="form-group" hidden="true">
+      <div class="form-group">
         {!! Form::label('no_tiket', 'No Tiket') !!}
         {!! Form::text('no_tiket', null , array('class' => 'form-control')) !!}
       </div>
       
       <div class="form-group">
         {!! Form::label('nomor_label_tape', 'Nomor Label Tape') !!}
-        {!! Form::text('nomor_label_tape', null , array('class' => 'form-control')) !!}
+        {!! Form::textarea('nomor_label_tape', null , array('class' => 'form-control')) !!}
       </div>
-
-        <div class="form-group">
-          {!! Form::label('lokasi', 'Lokasi sumber Tape') !!}
-          {!! Form::select('lokasi_sumber', $lokasitape, null , array('class' => 'form-control') ) !!}
-        </div>
-
         <div class="form-group">
           {!! Form::label('lokasi', 'Lokasi Tujuan Tape') !!}
           {!! Form::select('lokasi_tujuan', $lokasitape, null , array('class' => 'form-control')) !!}

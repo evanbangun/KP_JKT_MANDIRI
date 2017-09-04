@@ -80,7 +80,8 @@
                                 0
                               @endif
                            </td>
-                       </tr>
+                            <td align="center"><a href="/jenistapeedit/{{$jt->nomor_jenis}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&emsp;<a href="/jenistapedelete/{{$jt->nomor_jenis}}"><i class="fa fa-times-circle" aria-hidden="true"></i></a></td>
+                           </tr>
                    @endforeach
               </table>
           </div>

@@ -11,77 +11,112 @@
 |
 */
 
+Route::resource('user','UserController');
+
+Route::get('/loginpage', 'UserController@loginpage');
+
+Route::get('/logout', 'UserController@logout')->middleware('authuser');
+
+Route::get('/', 'UserController@index')->middleware('authuser');
+
+Route::get('/home', 'UserController@index')->middleware('authuser');
+
+Route::post('/loginpost', 'UserController@loginpost');
 
 Route::resource('tape','TapeController');
 
-Route::get('/', 'TapeController@index');
+Route::get('/daftartape', 'TapeController@index')->middleware('authuser');
 
-Route::get('/home', 'TapeController@index');
+Route::get('/tapekosong', 'TapeController@index2')->middleware('authuser');
 
-Route::get('/tapekosong', 'TapeController@index2');
+Route::get('/advancedsearch', 'TapeController@advancedsearch')->middleware('authuser');
 
-Route::get('/advancedsearch', 'TapeController@advancedsearch');
+Route::get('/tambahtapekosong', 'TapeController@createtapekosong')->middleware('authuser');
 
-Route::get('/tambahtapekosong', 'TapeController@createtapekosong');
+Route::get('/tapeedit/{id}','TapeController@tapeedit')->middleware('authuser');
 
-Route::post('/tambahtapebatch','TapeController@storebatch');
+Route::get('/tapedelete/{id}','TapeController@tapedelete')->middleware('authuser');
 
-Route::post('/tambahtape','TapeController@tambahtape');
+Route::post('/tapeupdate/{id}','TapeController@tapeupdate')->middleware('authuser');
 
-Route::get('/searchdata', 'TapeController@searchdata');
+Route::post('/tambahtapebatch','TapeController@storebatch')->middleware('authuser');
 
-Route::post('/advsearchdatabc', 'TapeController@advsearchdatabc');
+Route::post('/tambahtape','TapeController@tambahtape')->middleware('authuser');
 
-Route::post('/advsearchdatakw', 'TapeController@advsearchdatakw');
+Route::get('/searchdata', 'TapeController@searchdata')->middleware('authuser');
 
-Route::get('/tambahtiket','TapeController@tambahticket');
+Route::post('/advsearchdatabc', 'TapeController@advsearchdatabc')->middleware('authuser');
 
-Route::get('/daftartiket', 'TapeController@tiket');
+Route::post('/advsearchdatakw', 'TapeController@advsearchdatakw')->middleware('authuser');
 
-Route::post('/tiket','TapeController@storetiket');
+Route::get('/tambahtiket','TapeController@tambahticket')->middleware('authuser');
 
-Route::get('/daftarlokasi','DaftarController@indexlokasi');
+Route::get('/daftartiket', 'TapeController@tiket')->middleware('authuser');
 
-Route::get('/daftarrak','DaftarController@indexrak');
+Route::post('/tiket','TapeController@storetiket')->middleware('authuser');
 
-Route::get('/daftarjenistape','DaftarController@indextape');
+Route::get('/daftarlokasi','DaftarController@indexlokasi')->middleware('authuser');
 
-Route::resource('peminjaman','PeminjamanController');
+Route::get('/lokasiedit/{id}','DaftarController@lokasiedit')->middleware('authuser');
 
-Route::post('/tambahlokasi','TambahController@tambahlokasi');
+Route::get('/lokasidelete/{id}','DaftarController@lokasidelete')->middleware('authuser');
 
-Route::post('/tambahrak','TambahController@tambahrak');
+Route::get('/daftarrak','DaftarController@indexrak')->middleware('authuser');
 
-Route::post('/tambahjenistape','TambahController@tambahjenistape');
+Route::get('/daftarjenistape','DaftarController@indextape')->middleware('authuser');
 
-Route::get('/stockopname','ActivityController@stockopname');
+Route::post('/tambahlokasi','TambahController@tambahlokasi')->middleware('authuser');
 
-Route::get('/movingtape','ActivityController@movingtape');
+Route::get('/lokasiedit/{id}','TambahController@lokasiedit')->middleware('authuser');
 
-Route::post('/movetape','ActivityController@movetape');
+Route::post('/lokasiupdate/{id}','TambahController@lokasiupdate')->middleware('authuser');
 
-Route::get('/testingtape','ActivityController@testingtape');
+Route::get('/lokasidelete/{id}','TambahController@lokasidelete')->middleware('authuser');
 
-Route::get('/createtesting','ActivityController@createtesting');
+Route::post('/tambahrak','TambahController@tambahrak')->middleware('authuser');
 
-Route::post('/konfirmasitesting','ActivityController@konfirmasitesting');
+Route::get('/rakedit/{id}','TambahController@rakedit')->middleware('authuser');
 
-Route::get('/edittest/{ktt}','ActivityController@edittest');
+Route::post('/rakupdate/{id}','TambahController@rakupdate')->middleware('authuser');
 
-Route::post('/updatetesting','ActivityController@updatetesting');
+Route::get('/rakdelete/{id}','TambahController@rakdelete')->middleware('authuser');
 
-Route::get('/openticket', 'DaftarController@open');
+Route::post('/tambahjenistape','TambahController@tambahjenistape')->middleware('authuser');
 
-Route::get('/closedticket', 'DaftarController@closed');
+Route::get('/jenistapeedit/{id}','TambahController@jenistapeedit')->middleware('authuser');
 
-Route::get('/overdueticket', 'DaftarController@overdue');
+Route::post('/jenistapeupdate/{id}','TambahController@jenistapeupdate')->middleware('authuser');
 
-Route::get('/tambahtiket','DaftarController@peminjaman');
+Route::get('/jenistapedelete/{id}','TambahController@jenistapedelete')->middleware('authuser');
 
-Route::get('/daftartiket', 'TapeController@tiket');
+Route::get('/stockopname','ActivityController@stockopname')->middleware('authuser');
 
-Route::post('/postpeminjaman','DaftarController@storepeminjaman');
+Route::get('/movingtape','ActivityController@movingtape')->middleware('authuser');
 
-Route::get('/updatedopen/{id}','DaftarController@edit');
+Route::post('/movetape','ActivityController@movetape')->middleware('authuser');
 
-Route::get('/closetick/{id}','DaftarController@editclose');
+Route::get('/testingtape','ActivityController@testingtape')->middleware('authuser');
+
+Route::get('/createtesting','ActivityController@createtesting')->middleware('authuser');
+
+Route::post('/konfirmasitesting','ActivityController@konfirmasitesting')->middleware('authuser');
+
+Route::get('/edittest/{ktt}','ActivityController@edittest')->middleware('authuser');
+
+Route::post('/updatetesting','ActivityController@updatetesting')->middleware('authuser');
+
+Route::get('/openticket', 'DaftarController@open')->middleware('authuser');
+
+Route::get('/closedticket', 'DaftarController@closed')->middleware('authuser');
+
+Route::get('/overdueticket', 'DaftarController@overdue')->middleware('authuser');
+
+Route::get('/tambahtiket','DaftarController@peminjaman')->middleware('authuser');
+
+Route::get('/daftartiket', 'TapeController@tiket')->middleware('authuser');
+
+Route::post('/postpeminjaman','DaftarController@storepeminjaman')->middleware('authuser');
+
+Route::get('/updatedopen/{id}','DaftarController@edit')->middleware('authuser');
+
+Route::get('/closetick/{id}','DaftarController@editclose')->middleware('authuser');

@@ -40,12 +40,16 @@
                            <td>{{ $f->status_tape }}</td>
                            <td>
                            @if($f->digunakan_tape == 1)
-                              {{ $f->nama_lokasi }}, Rak {{ $f->nomor_rak }}, Lapis {{ $f->lapis_tape }}, Baris {{ $f->baris_tape }}, Slot {{ $f->slot_tape }}
+                              {{ $f->nama_lokasi }}, Rak {{ $f->nomor_rak }}, Slot {{ $f->slot_tape }}
                            @elseif($f->digunakan_tape == 0)
                               {{ $f->nama_lokasi }}
                            </td>
                            @endif
-                           <td>{{ $f->bulan }} {{ $f->tahun }}</td>
+                           <td>
+                            @if($f->bulan_tahun != '')
+                                {{ \Carbon\Carbon::parse($f->bulan_tahun)->format('j-n-Y')}}
+                            @endif
+                           </td>
                        </tr>
                    @endforeach
               </table>

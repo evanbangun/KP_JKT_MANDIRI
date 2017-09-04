@@ -21,8 +21,8 @@
             <table class="table table-bordered table-striped table-hover table-condensed tfix">
                     <thead align="center">
                        <tr>
-                           <td><b>Nama</b></td>
                            <td><b>Kode</b></td>
+                           <td><b>Nama</b></td>
                            <td><b>Jumlah Rak</b></td>
                            <td><b>Jumlah Tape</b></td>
                        </tr>
@@ -63,6 +63,9 @@
                                     0
                                   @endif 
                                 </td>
+                                @if(session('role') == 0)
+                                  <td align="center"><a href="/lokasiedit/{{$l->kode_lokasi}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&emsp;<a href="/lokasidelete/{{$l->kode_lokasi}}"><i class="fa fa-times-circle" aria-hidden="true"></i></a></td>
+                                @endif
                            </tr>
                        @endforeach
               </table>

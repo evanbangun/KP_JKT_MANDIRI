@@ -32,10 +32,8 @@
         </div>
         <br>
         {!! Form::button(' Submit', array('type' => 'Submit', 'class' => 'btn btn-primary'))!!}
-        {!! Form::button(' Batal', array('type' => 'button', 'class' => 'btn btn-default', 'data-dismiss' => 'modal'))!!}
         {{ csrf_field() }}
         {!! Form::close()!!}
       </div>
     </div>
-  </div>
 @endsection

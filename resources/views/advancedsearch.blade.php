@@ -71,9 +71,7 @@ div.tab button.active {
       </div>
       <div class="form-group">
         {!! Form::label('backup_tahun', 'Bulan dan Tahun Backup') !!}
-        {!! Form::select('bulan', $bulantape, null , array('class' => 'form-control')) !!}
-        <br>
-        {!! Form::select('tahun', $tahuntape, null , array('class' => 'form-control')) !!}
+        {!! Form::text('bulan_tahun', null , array('class' => 'form-control')) !!}
       </div>
       <div class="form-group">
         {!! Form::label('nomor_label_tape', 'Label Tape') !!}

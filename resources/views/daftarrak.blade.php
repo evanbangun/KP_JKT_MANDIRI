@@ -46,7 +46,10 @@
                                   0
                                 @endif 
                                 / {{ $r->kapasitas_rak }}</td>
-                           </tr>
+                                @if(session('role') == 0)
+                                  <td align="center"><a href="/rakedit/{{$r->kode_rak}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&emsp;<a href="/rakdelete/{{$r->kode_rak}}"><i class="fa fa-times-circle" aria-hidden="true"></i></a></td>
+                                @endif
+                              </tr>
                        @endforeach
               </table>
           </div>

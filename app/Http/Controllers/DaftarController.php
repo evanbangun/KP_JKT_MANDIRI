@@ -52,13 +52,27 @@ class DaftarController extends Controller
    
     }
 
-      public function storepeminjaman(Request $request)
+    public function storepeminjaman(Request $request)
     {   
-        peminjaman::create($request->all());
-        $lokasisumber = DB::select("select lokasi_tape from tapes where nomor_label_tape = ?",[$request->nomor_label_tape]);
-        DB::update("update peminjamen set lokasi_sumber = ".$lokasisumber{0}->lokasi_tape."  where nomor_label_tape  = '".$request->nomor_label_tape."' " );
+        $arrlabel = preg_split("/[\s,]+/", $request->nomor_label_tape);
+        
+        foreach($arrlabel as $nlt)
+        {
+            $lokasisumber = DB::table('tapes')->where('nomor_label_tape', $nlt)->first();
+            $peminjaman = new peminjaman;
+            $peminjaman->no_tiket = $request->no_tiket;
+            $peminjaman->nomor_label_tape = $nlt;
+            $peminjaman->lokasi_sumber = $lokasisumber->lokasi_tape;
+            $peminjaman->lokasi_tujuan = $request->lokasi_tujuan;
+            $peminjaman->lama_peminjaman = $request->lama_peminjaman;
+            $peminjaman->keterangan = $request->keterangan;
+            $peminjaman->save();
+            // peminjaman::create($request->all());
+            // $lokasisumber = DB::select("select lokasi_tape from tapes where nomor_label_tape = ?",[$request->nomor_label_tape]);
+            // DB::update("update peminjamen set lokasi_sumber = '".$lokasisumber{0}->lokasi_tape."'  where nomor_label_tape  = '".$request->nomor_label_tape."' " );
 
-        DB::update('update tapes set lokasi_tape = ? where nomor_label_tape  = ?', [$request->lokasi_tujuan,$request->nomor_label_tape]);
+            // DB::update('update tapes set lokasi_tape = ? where nomor_label_tape  = ?', [$request->lokasi_tujuan,$request->nomor_label_tape]);
+        }
         return redirect ('/daftartiket');
     }
 

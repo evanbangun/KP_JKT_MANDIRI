@@ -26,10 +26,10 @@
         <div class="sidebar-inner">
           <div class="sidebar-top">
             <div class="userlogged clearfix">
-              <!-- <i class="icon icons-faces-users-01"></i>
+              <i class="icon icons-faces-users-01"></i>
               <div class="user-details">
-                <h4 class="">User</h4>
-              </div> -->
+                <h4 class="">{{session('name')}}</h4>
+              </div>
             </div>
           </div>
           <div class="menu-title">
@@ -72,11 +72,11 @@
               </ul>
             </li> -->
           </ul>
+          
           <div class="sidebar-widgets"></div>
-          <!-- <div class="sidebar-footer clearfix" style="">
-            <a class="pull-left btn-effect" href="#" data-modal="modal-1" data-rel="tooltip" data-placement="top" data-original-title="Logout">
-            <i class="icon-power"></i></a>
-          </div> -->
+          <div class="sidebar-footer clearfix" style="">
+            <a class="pull-left btn-effect" href="/logout" data-original-title="Logout"><i class="icon-power"></i></a>
+          </div>
         </div>
       </div>
       <!-- END SIDEBAR -->

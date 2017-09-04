@@ -1,5 +1,12 @@
-
 <!DOCTYPE html>
+<link rel="stylesheet" href="/css2/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="/css2/fullcalendar.css" />
+<link rel="stylesheet" href="/css2/matrix-style.css" />
+<link rel="stylesheet" href="/css2/matrix-media.css" />
+<link href="/font-awesome2/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" href="/css2/jquery.gritter.css" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+
 <html class="" lang="en">
 <head>
   <meta charset="utf-8">
@@ -26,10 +33,10 @@
         <div class="sidebar-inner">
           <div class="sidebar-top">
             <div class="userlogged clearfix">
-              <!-- <i class="icon icons-faces-users-01"></i>
+              <i class="icon icons-faces-users-01"></i>
               <div class="user-details">
-                <h4 class="">User</h4>
-              </div> -->
+                <h4 class="">{{session('name')}}</h4>
+              </div>
             </div>
           </div>
           <div class="menu-title">
@@ -73,10 +80,9 @@
             </li> -->
           </ul>
           <div class="sidebar-widgets"></div>
-          <!-- <div class="sidebar-footer clearfix" style="">
-            <a class="pull-left btn-effect" href="#" data-modal="modal-1" data-rel="tooltip" data-placement="top" data-original-title="Logout">
-            <i class="icon-power"></i></a>
-          </div> -->
+          <div class="sidebar-footer clearfix" style="">
+            <a class="pull-left btn-effect" href="/logout" data-original-title="Logout"><i class="icon-power"></i></a>
+          </div>
         </div>
       </div>
       <!-- END SIDEBAR -->

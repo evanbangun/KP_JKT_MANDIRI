@@ -19,12 +19,9 @@ class CreateTapeTable extends Migration
             $table->primary('nomor_label_tape');
             $table->string('jenis_tape', 100);
             $table->string('status_tape', 100)->default('Ada di warehouse');
-            $table->string('lokasi_tape', 5);
-            $table->string('bulan', 20)->nullable();
-            $table->string('tahun', 20)->nullable();
+            $table->string('lokasi_tape', 5)->nullable();
+            $table->date('bulan_tahun');
             $table->integer('kode_rak_tape', false, true)->nullable();
-            $table->integer('lapis_tape', false, true)->nullable();
-            $table->integer('baris_tape', false, true)->nullable();
             $table->integer('slot_tape', false, true)->nullable();
             $table->string('keterangan_tape',2048)->nullable();
             $table->integer('digunakan_tape', false, true)->default(0);
@@ -43,14 +40,14 @@ class CreateTapeTable extends Migration
                   ->references('kode_rak')
                   ->on('master_raks')
                   ->onUpdate('cascade')
-                  ->onDelete('cascade');
+                  ->onDelete('set null');
         });
         Schema::table('tapes',function($table){
             $table->foreign('lokasi_tape')
                   ->references('kode_lokasi')
                   ->on('master_lokasis')
                   ->onUpdate('cascade')
-                  ->onDelete('cascade');
+                  ->onDelete('set null');
         });
     }
 
