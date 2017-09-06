@@ -40,7 +40,10 @@
                            <td>{{ $f->status_tape }}</td>
                            <td>
                            @if($f->digunakan_tape == 1)
-                              {{ $f->nama_lokasi }}, Rak {{ $f->nomor_rak }}, Slot {{ $f->slot_tape }}
+                              {{ $f->nama_lokasi }}
+                              @if($f->nomor_rak != '')
+                                , Rak {{ $f->nomor_rak }}, Slot {{ $f->slot_tape }}
+                              @endif
                            @elseif($f->digunakan_tape == 0)
                               {{ $f->nama_lokasi }}
                            </td>

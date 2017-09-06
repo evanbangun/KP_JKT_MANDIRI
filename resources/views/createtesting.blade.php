@@ -80,6 +80,9 @@
                     </td>
                     <td>3 Tahun</td>
                   </tr>
+                <?php
+                  $i++;
+                ?>
                 @endforeach
              </tr>
           </thead>

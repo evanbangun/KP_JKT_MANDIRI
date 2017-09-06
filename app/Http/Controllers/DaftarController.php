@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\peminjaman;
 use App\master_lokasi;
+use App\audit_trail;
 use DB;
 
 class DaftarController extends Controller
@@ -79,14 +80,55 @@ class DaftarController extends Controller
 
     public function open()
     {
-        $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Open Ticket' WHEN status=2 THEN 'Closed Ticket'   ELSE 'Over Due Ticket' END as status
+        $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Tape On Delivery' WHEN status=2 THEN 'Restoring' WHEN status=3 THEN 'DONE' WHEN status=4 THEN 'Close Ticket'  ELSE 'Over Due Ticket' END as status
         from peminjamen p 
         left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
         left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan
-        where status = 0 or status = 1");
+        where status = 0
+        GROUP BY no_tiket");
 
         
-        return view ('OpenTicket',compact('tiket'))->with('alert','Opened');
+        return view ('OpenTicket',compact('tiket'))->with('alert','Tape On Delivery');
+    }
+
+    public function OnDeliver()
+    {
+        $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Tape On Delivery' WHEN status=2 THEN 'Restoring' WHEN status=3 THEN 'DONE' WHEN status=4 THEN 'Close Ticket'  ELSE 'Over Due Ticket' END as status
+        from peminjamen p 
+        left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
+        left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan
+        where status = 1
+        GROUP BY no_tiket");
+
+        
+        return view ('daftarondelivery',compact('tiket'))->with('alert','New Ticket');
+    }
+
+    public function restore()
+    {
+        $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Tape On Delivery' WHEN status=2 THEN 'Restoring' WHEN status=3 THEN 'DONE' WHEN status=4 THEN 'Close Ticket'  ELSE 'Over Due Ticket' END as status
+        from peminjamen p 
+        left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
+        left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan
+        where status = 2
+        GROUP BY no_tiket");
+
+        
+        return view ('daftarrestoring',compact('tiket'))->with('alert','New Ticket');
+    }
+
+    public function editrestore($no_tiket) 
+    {
+        DB::update('update peminjamen set status = 2 where no_tiket = '.$no_tiket);
+        echo "Record updated successfully.<br/>";
+        return redirect ('/daftardeliver');
+    }
+
+    public function editdone($no_tiket) 
+    {
+        DB::update('update peminjamen set status = 3 where no_tiket = '.$no_tiket);
+        echo "Record updated successfully.<br/>";
+        return redirect ('/daftarrestore');
     }
 
     public function edit($no_tiket) 
@@ -95,14 +137,26 @@ class DaftarController extends Controller
         echo "Record updated successfully.<br/>";
         return redirect ('/openticket');
     }
-
-    public function closed()
+    
+    public function daftarclose()
     {
-        $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Open Ticket' WHEN status=2 THEN 'Closed Ticket'   ELSE 'Over Due Ticket' END as status
+        $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Tape On Delivery' WHEN status=2 THEN 'Restoring' WHEN status=3 THEN 'DONE' WHEN status=4 THEN 'Close Ticket'  ELSE 'Over Due Ticket' END as status
         from peminjamen p 
         left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
         left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan
-        where status = 1 or status = 2");
+        where status = 4
+        GROUP BY no_tiket");
+        return view ('daftarcloseticket',compact('tiket'));
+    }
+
+    public function closed()
+    {
+        $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Tape On Delivery' WHEN status=2 THEN 'Restoring' WHEN status=3 THEN 'DONE' WHEN status=4 THEN 'Close Ticket'  ELSE 'Over Due Ticket' END as status
+        from peminjamen p 
+        left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
+        left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan
+        where status = 3
+        GROUP BY no_tiket");
         return view ('CloseTicket',compact('tiket'));
     }
 
@@ -113,19 +167,20 @@ class DaftarController extends Controller
         $label=DB::select('select nomor_label_tape from peminjamen where no_tiket = '.$no_tiket);
         DB::update('update tapes set lokasi_tape = ? where nomor_label_tape  = ?', [$lokasi{0}->lokasi_sumber,$label{0}->nomor_label_tape]);
         DB::update('update peminjamen set lokasi_tujuan = lokasi_sumber where no_tiket = '.$no_tiket);
-        DB::update('update peminjamen set status = 2 where no_tiket = '.$no_tiket);
+        DB::update('update peminjamen set status = 4 where no_tiket = '.$no_tiket);
         echo "Record updated successfully.<br/>";
-        return redirect ('/closedticket');
+        return redirect ('/daftardone');
     }
 
     public function overdue()
     {
 
-           $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Open Ticket' WHEN status=2 THEN 'Closed Ticket'   ELSE 'Over Due Ticket' END as status
+           $tiket = DB::select("select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan,p.lama_peminjaman,p.keterangan,p.created_at,p.updated_at,CASE WHEN status=0 THEN 'New Ticket' WHEN status=1 THEN 'Tape On Delivery' WHEN status=2 THEN 'Restoring' WHEN status=3 THEN 'DONE' WHEN status=4 THEN 'Close Ticket'  ELSE 'Over Due Ticket' END as status
           from peminjamen p 
           left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
           left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan
-          where p.lama_peminjaman = CURRENT_DATE-1 and status = 1" );
+          where p.lama_peminjaman = CURRENT_DATE-1 and status IN (0,1,2,3)
+          GROUP BY no_tiket");
 
         return view ('OverDueTicket',compact('tiket'));
     }

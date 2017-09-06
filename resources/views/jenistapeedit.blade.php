@@ -25,11 +25,11 @@
     <div class="panel-body">
         {!! Form::open(array('url' => '/jenistapeupdate/'.$getjenistape->nomor_jenis)) !!}
         <div class="form-group">
-          {!! Form::label('nomor_jenis', 'Nama Lokasi') !!}
+          {!! Form::label('nomor_jenis', 'Nomor Jenis') !!}
           {!! Form::text('nomor_jenis', $getjenistape->nomor_jenis , array('class' => 'form-control')) !!}
         </div>
         <div class="form-group">
-          {!! Form::label('nama_jenis', 'Kode Lokasi') !!}
+          {!! Form::label('nama_jenis', 'Merek') !!}
           {!! Form::text('nama_jenis', $getjenistape->nama_jenis , array('class' => 'form-control')) !!}
         </div>
         {!! Form::button('Update', array('type' => 'submit', 'class' => 'btn btn-primary'))!!}

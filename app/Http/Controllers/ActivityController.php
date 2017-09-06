@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\tape;
 use App\list_testing;
+use App\audit_trail;
 use DB;
 
 class ActivityController extends Controller
@@ -62,10 +63,10 @@ class ActivityController extends Controller
         $index=0;
         foreach($jenistape as $jt)
         {
-            $months3[$index] = tape::inRandomOrder()->where('jenis_tape','LTO1')->whereRaw('bulan <= MONTH(curdate() - INTERVAL 3 MONTH)')->first();
-            $months6[$index] = tape::inRandomOrder()->where('jenis_tape', 'LTO1')->whereRaw('bulan <= MONTH(curdate() - INTERVAL 6 MONTH)')->first();
-            $years1[$index] = tape::inRandomOrder()->where('jenis_tape', 'LTO1')->whereRaw('tahun <= YEAR(curdate() - INTERVAL 1 YEAR)')->first();
-            $years3[$index] = tape::inRandomOrder()->where('jenis_tape', 'LTO1')->whereRaw('tahun <= YEAR(curdate() - INTERVAL 3 YEAR)')->first();
+            $months3[$index] = tape::inRandomOrder()->where('jenis_tape', $jt->nomor_jenis)->whereRaw('bulan_tahun BETWEEN DATE_SUB(curdate(), INTERVAL 3 MONTH) AND DATE_SUB(CURDATE(), INTERVAL 4 MONTH)')->first();
+            $months6[$index] = tape::inRandomOrder()->where('jenis_tape', $jt->nomor_jenis)->whereRaw('bulan_tahun BETWEEN DATE_SUB(curdate(), INTERVAL 6 MONTH) AND DATE_SUB(CURDATE(), INTERVAL 6 MONTH)')->first();
+            $years1[$index] = tape::inRandomOrder()->where('jenis_tape', $jt->nomor_jenis)->whereRaw('bulan_tahun BETWEEN DATE_SUB(curdate(), INTERVAL 1 YEAR) AND DATE_SUB(CURDATE(), INTERVAL 2 YEAR)')->first();
+            $years3[$index] = tape::inRandomOrder()->where('jenis_tape', $jt->nomor_jenis)->whereRaw('bulan_tahun BETWEEN DATE_SUB(curdate(), INTERVAL 3 YEAR) AND DATE_SUB(CURDATE(), INTERVAL 4 YEAR)')->first();
             $index++;
         }
         return view ('/createtesting', compact('jenistape', 'months3', 'months6', 'years1', 'years3'));
@@ -132,6 +133,12 @@ class ActivityController extends Controller
             }
             $index++;
         }
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Testing tape";
+        $audittrail->save();
+
         return redirect ('/testingtape');
     }
 
@@ -171,17 +178,59 @@ class ActivityController extends Controller
         
         foreach($arrlabel as $nlt)
         {
-            $datatape = DB::table('tapes')->where('nomor_label_tape', $nlt)->get();
+            $datatape = DB::table('tapes')->where('nomor_label_tape', $nlt)->first();
             if($datatape)
             {
-                if($datatape{0}->digunakan_tape == 0)
+                if($datatape->digunakan_tape == 0)
                 {
                     DB::table('tapes')->where('nomor_label_tape', $nlt)
                                       ->update(['lokasi_tape' => $request->lokasi]);
                 }
+                else if($datatape->digunakan_tape == 1)
+                {
+                    $checkrak = DB::table('master_raks')->where('lokasi_rak', $request->lokasi)
+                                                        ->where('jenis_tape_rak', $datatape->jenis_tape)
+                                                        ->get();
+                    if($checkrak->count())
+                    {
+                        $full = true;
+                        foreach($checkrak as $cr)
+                        {
+                            $checktape = DB::table('tapes')->where('kode_rak_tape', $cr->kode_rak)->get();
+                            if($checktape->count() < $cr->kapasitas_rak)
+                            {
+                                DB::table('tapes')->where('nomor_label_tape', $nlt)
+                                                  ->update(['lokasi_tape' => $request->lokasi,
+                                                            'kode_rak_tape' => $cr->kode_rak]);
+                                $full = false;
+                                break;
+                            }
+                        }
+                        if($full)
+                        {
+                            DB::table('tapes')->where('nomor_label_tape', $nlt)
+                                              ->update(['lokasi_tape' => $request->lokasi,
+                                                        'kode_rak_tape' => NULL,
+                                                        'slot_tape' => NULL]);
+                        }
+                    }
+                    else
+                    {
+                        DB::table('tapes')->where('nomor_label_tape', $nlt)
+                                          ->update(['lokasi_tape' => $request->lokasi,
+                                                    'kode_rak_tape' => NULL,
+                                                    'slot_tape' => NULL]);
+                    }
+                }
             }
         }
-        return redirect('/tapekosong');
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Pemindahan tape ke ".$request->lokasi;
+        $audittrail->save();
+
+        return redirect('/daftartape');
     }
 
     /**

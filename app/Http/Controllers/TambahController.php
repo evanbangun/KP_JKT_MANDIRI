@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\master_rak;
 use App\master_jenis_tape;
 use App\master_lokasi;
+use App\audit_trail;
 use DB;
 
 class TambahController extends Controller
@@ -47,6 +48,11 @@ class TambahController extends Controller
         $lokasi->kode_lokasi = strtoupper($request->kode_lokasi);
         $lokasi->nama_lokasi = $request->nama_lokasi;
         $lokasi->save();
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Penambahaan lokasi baru : ".$request->nama_lokasi." (".strtoupper($request->kode_lokasi).")";
+        $audittrail->save();
         return redirect('/daftarlokasi');
     }
 
@@ -66,16 +72,31 @@ class TambahController extends Controller
         {
             $msg = 'Duplicate data detected';
             return redirect('/lokasiedit/'.$kl)->withErrors([$msg]);
-        } 
+        }
+
+        $getlokasi = DB::table('master_lokasis')->where('kode_lokasi', $kl)->first();
+
         $updatelokasi = master_lokasi::findorfail($kl);
         $updatelokasi->update($request->all());
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Update lokasi : ".$getlokasi->nama_lokasi." -> ".$request->nama_lokasi.", ".$getlokasi->kode_lokasi." -> ".$request->kode_lokasi;
+        $audittrail->save();
+
         return redirect('/daftarlokasi');
     }
 
     public function lokasidelete($kl)
     {
+        $getlokasi = DB::table('master_lokasis')->where('kode_lokasi', $kl)->first();
         $lokasi = new master_lokasi;
         $lokasi->destroy($kl);
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Delete Lokasi : ".$getlokasi->nama_lokasi;
+        $audittrail->save();
         return redirect('/daftarlokasi');
     }
 
@@ -93,6 +114,14 @@ class TambahController extends Controller
         $rak->jenis_tape_rak = $request->jenis_tape_rak;
         $rak->kapasitas_rak = $request->kapasitas_rak;
         $rak->save();
+
+        $getlokasi = DB::table('master_lokasis')->where('kode_lokasi', $rak->lokasi_rak)->first();
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Tambah rak ".$request->lokasi_rak.'-'.$indexrak." di ".$getlokasi->nama_lokasi ;
+        $audittrail->save();
+
         return redirect('/daftarrak');
     }
 
@@ -134,11 +163,22 @@ class TambahController extends Controller
                               ->update(['slot_tape' => NULL, 'kode_rak_tape' => NULL]);
         }
 
+        $lokasiasal = DB::table('master_lokasis')->where('kode_lokasi', $rakold->lokasi_rak)->first();
+        $lokasitujuan = DB::table('master_lokasis')->where('kode_lokasi', $request->lokasi_rak)->first();
+        
+        $jenistapelama = DB::table('master_jenis_tapes')->where('nomor_jenis', $rakold->jenis_tape_rak)->first();    
+        $jenistapebaru = DB::table('master_jenis_tapes')->where('nomor_jenis', $request->jenis_tape_rak)->first();    
+        
         DB::table('master_raks')->where('kode_rak', $kr)
                                 ->update(['lokasi_rak' => $request->lokasi_rak,
                                           'jenis_tape_rak' => $request->jenis_tape_rak,
                                           'kapasitas_rak' => $request->kapasitas_rak,
                                           'nomor_rak' => $request->lokasi_rak.'-'.$indexrak]);
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Update rak : ".$lokasiasal->nama_lokasi."->".$lokasitujuan->nama_lokasi.", ".$jenistapelama->nomor_jenis."->".$jenistapebaru->nomor_jenis.", ".$rakold->kapasitas_rak."->".$request->kapasitas_rak.", ".$rakold->nomor_rak."->".$request->lokasi_rak.'-'.$indexrak ;
+        $audittrail->save();
        
         return redirect('/daftarrak');
     }
@@ -146,14 +186,28 @@ class TambahController extends Controller
     public function rakdelete($kr)
     {
         $updateslot = DB::table('tapes')->where('kode_rak_tape', $kr)->update(['slot_tape' => NULL]);
+        $getrak = DB::table('master_raks')->where('kode_rak', $kr)->first();
+
         $rak = new master_rak;
         $rak->destroy($kr);
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Delete rak : ".$getrak->nomor_rak ;
+        $audittrail->save();
+        
         return redirect('/daftarrak');
     }
 
     public function tambahjenistape(Request $request)
     {
         master_jenis_tape::create($request->all());
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Tambah jenis tape ".$request->nomor_jenis." (".$request->nama_jenis.")" ;
+        $audittrail->save();
+        
         return redirect('/daftarjenistape');
     }
 
@@ -167,21 +221,43 @@ class TambahController extends Controller
     {
         $check = DB::table('master_jenis_tapes')->where('nomor_jenis', '!=', $nj)
                                                 ->where('nomor_jenis', $request->nomor_jenis)
-                                                ->get();   
+                                                ->get(); 
         if($check->count())
         {
             $msg = 'Duplicate data detected';
             return redirect('/jenistapeedit/'.$nj)->withErrors([$msg]);
         } 
+
+        $getjenistape = DB::table('master_jenis_tapes')->where('nomor_jenis', $nj)->first();
+
         $updatejenistape = master_jenis_tape::findorfail($nj);
         $updatejenistape->update($request->all());
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Update jenis tape ".$getjenistape->nomor_jenis."->".$request->nomor_jenis.", ".$getjenistape->nama_jenis."->".$request->nama_jenis ;
+        $audittrail->save();
+
         return redirect('/daftarjenistape');
     }
 
-    public function jenistapedelete($nj)
+    public function jenistapedelete(Request $request, $nj)
     {
+        if(md5($request->password) != session('password'))
+        {
+            $msg = 'Password is wrong';
+            return redirect('/daftarjenistape')->withErrors([$msg]);
+        }
+        $getjenistape = DB::table('master_jenis_tapes')->where('nomor_jenis', $nj)->first();
+
         $jenistape = new master_jenis_tape;
         $jenistape->destroy($nj);
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Delete jenis tape : ".$getjenistape->nomor_jenis." (".$getjenistape->nama_jenis.")" ;
+        $audittrail->save();
+
         return redirect('/daftarjenistape');
     }
 

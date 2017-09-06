@@ -1,4 +1,4 @@
-@extends('app')
+@extends('appactivity')
 @section('title')
     Moving Tape
 @endsection

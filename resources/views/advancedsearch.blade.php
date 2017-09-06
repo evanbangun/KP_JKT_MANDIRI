@@ -70,8 +70,8 @@ div.tab button.active {
         {!! Form::select('lokasi_tape', $lokasitape, null , array('class' => 'form-control')) !!}
       </div>
       <div class="form-group">
-        {!! Form::label('backup_tahun', 'Bulan dan Tahun Backup') !!}
-        {!! Form::text('bulan_tahun', null , array('class' => 'form-control')) !!}
+        {!! Form::label('backup_tahun', 'Tahun Backup') !!}
+        {!! Form::text('backup_tahun', null , array('class' => 'form-control')) !!}
       </div>
       <div class="form-group">
         {!! Form::label('nomor_label_tape', 'Label Tape') !!}
@@ -86,25 +86,25 @@ div.tab button.active {
       {!! Form::open(array('url' => '/advsearchdatakw')) !!}
       <div class="form-group">
         {!! Form::label('kode_rak_tape', 'Rak Tape') !!}
-        {!! Form::select('select_rak', ['1' => 'Any', '2' => 'Start With', '3' => 'End With'], null) !!}
+        {!! Form::select('select_rak', ['1' => 'Any', '2' => 'Start With', '3' => 'End With'], 1) !!}
         <br>
         {!! Form::text('kode_rak_tape', null , array('class' => 'form-control')) !!}
       </div>
       <div class="form-group">
         {!! Form::label('jenis_tape', 'Jenis Tape') !!}
-        {!! Form::select('select_jenis', ['1' => 'Any', '2' => 'Start With', '3' => 'End With'], null) !!}
+        {!! Form::select('select_jenis', ['1' => 'Any', '2' => 'Start With', '3' => 'End With'], 1) !!}
         <br>
         {!! Form::text('jenis_tape', null , array('class' => 'form-control')) !!}
       </div>
       <div class="form-group">
         {!! Form::label('lokasi_tape', 'Lokasi Tape') !!}
-        {!! Form::select('select_lokasi', ['1' => 'Any', '2' => 'Start With', '3' => 'End With'], null) !!}
+        {!! Form::select('select_lokasi', ['1' => 'Any', '2' => 'Start With', '3' => 'End With'], 1) !!}
         <br>
         {!! Form::text('lokasi_tape', null , array('class' => 'form-control')) !!}
       </div>
       <div class="form-group">
         {!! Form::label('nomor_label_tape', 'Label Tape') !!}
-        {!! Form::select('select_label', ['1' => 'Any', '2' => 'Start With', '3' => 'End With'], null) !!}
+        {!! Form::select('select_label', ['1' => 'Any', '2' => 'Start With', '3' => 'End With'], 1) !!}
         <br>
         {!! Form::text('nomor_label_tape', null , array('class' => 'form-control')) !!}
       </div>

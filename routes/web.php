@@ -23,6 +23,12 @@ Route::get('/home', 'UserController@index')->middleware('authuser');
 
 Route::post('/loginpost', 'UserController@loginpost');
 
+Route::get('/manageuser', 'UserController@manageuser')->middleware('authuser');
+
+Route::get('/tambahuser', 'UserController@tambahuser')->middleware('authuser');
+
+Route::get('/deleteuser/{id}', 'UserController@destroy')->middleware('authuser');
+
 Route::resource('tape','TapeController');
 
 Route::get('/daftartape', 'TapeController@index')->middleware('authuser');
@@ -87,7 +93,7 @@ Route::get('/jenistapeedit/{id}','TambahController@jenistapeedit')->middleware('
 
 Route::post('/jenistapeupdate/{id}','TambahController@jenistapeupdate')->middleware('authuser');
 
-Route::get('/jenistapedelete/{id}','TambahController@jenistapedelete')->middleware('authuser');
+Route::post('/jenistapedelete/{id}','TambahController@jenistapedelete')->middleware('authuser');
 
 Route::get('/stockopname','ActivityController@stockopname')->middleware('authuser');
 
@@ -107,7 +113,17 @@ Route::post('/updatetesting','ActivityController@updatetesting')->middleware('au
 
 Route::get('/openticket', 'DaftarController@open')->middleware('authuser');
 
-Route::get('/closedticket', 'DaftarController@closed')->middleware('authuser');
+Route::get('/updaterestore/{id}','DaftarController@editrestore')->middleware('authuser');
+
+Route::get('/updatedone/{id}','DaftarController@editdone')->middleware('authuser');
+
+Route::get('/daftarrestore','DaftarController@restore')->middleware('authuser');
+
+Route::get('/daftardone','DaftarController@closed')->middleware('authuser');
+
+Route::get('/daftarclose','DaftarController@daftarclose')->middleware('authuser');
+
+Route::get('/daftardeliver', 'DaftarController@OnDeliver')->middleware('authuser');
 
 Route::get('/overdueticket', 'DaftarController@overdue')->middleware('authuser');
 
@@ -120,3 +136,8 @@ Route::post('/postpeminjaman','DaftarController@storepeminjaman')->middleware('a
 Route::get('/updatedopen/{id}','DaftarController@edit')->middleware('authuser');
 
 Route::get('/closetick/{id}','DaftarController@editclose')->middleware('authuser');
+
+Route::resource('audittrail', 'AuditTrailController');
+
+Route::get('/audittrail', 'AuditTrailController@index')->middleware('authuser');
+

@@ -36,21 +36,37 @@
             <span>MAIN MENU</span>
           </div>
           <ul class="nav nav-sidebar">
+            <li class="tm"><a href="/home"><span>Home</span></a></li>
             <li class="tm nav-parent "><a ><span>Daftar Tape</span></a>
               <ul class="children collapse">
                 <li class=""><a href="/tape">Terpakai</a></li>
                 <li class=""><a href="/tapekosong">Kosong</a></li>
               </ul>
             </li>
+            @if(session('role') != 2)
             <li class="tm nav-parent active"><a ><span>Peminjaman</span></a>
               <ul class="children collapse">  
                 <li class=""><a href="/daftartiket">List Ticket</a></li>
-                <li class=""><a href="/tambahtiket">New Ticket</a></li>
-                <li class=""><a href="/openticket">Open Ticket</a></li>
-                <li class=""><a href="/closedticket">Closed Ticket</a></li>
+                @if(session('role') != 1)
+                <li class=""><a href="/tambahtiket">Buat Ticket</a></li>
+                @endif
+                <li class=""><a href="/openticket">Daftar New Ticket</a></li>
+                @if(session('role') != 1)
+                <li class=""><a href="/daftardeliver">Daftar On Delivery </a></li>
+                @endif
+                @if(session('role') != 1)
+                <li class=""><a href="/daftarrestore">Daftar Restoring </a></li>
+                @endif
+                @if(session('role') != 3)
+                <li class=""><a href="/daftardone">Daftar Done Ticket</a></li>
+                @endif
+                @if(session('role') != 3)
+                <li class=""><a href="/daftarclose">Daftar Closed Ticket</a></li>
+                @endif
                 <li class=""><a href="/overdueticket">Over Due Ticket</a></li>
               </ul>
             </li>
+            @endif
             <li class="tm nav-parent"><a ><span>Detail</span></a>
               <ul class="children collapse">  
                 <li class=""><a href="/daftarlokasi">Lokasi</a></li>
@@ -58,19 +74,25 @@
                 <li class=""><a href="/daftarjenistape">Tape</a></li>
               </ul>
             </li>
+            @if(session('role') != 2)
             <li class="tm nav-parent"><a ><span>Activity</span></a>
               <ul class="children collapse">  
+                @if(session('role') != 3)
                 <li class=""><a href="/stockopname">Stock Opname</a></li>
                 <li class=""><a href="/movingtape">Moving Tape</a></li>
+                @endif
+                @if (session('role') != 1)
                 <li class=""><a href="/testingtape">Testing Tape</a></li>
+                @endif
               </ul>
             </li>
-            <!-- <li class="tm nav-parent "><a href=""><span>Form</span></a>
-              <ul class="children collapse">
-                <li class=""><a href="/peminjaman/create">Peminjaman</a></li>
-                <li class=""><a href="/">Pengembalian</a></li>
-              </ul>
-            </li> -->
+            @endif
+            <li class="tm "><a href="/audittrail"><span>Audit Trail</span></a>
+            </li>
+            @if(session('role') == 0)
+            <li ><a href="/manageuser"><span>Manage User</span></a>
+            </li>
+            @endif
           </ul>
           
           <div class="sidebar-widgets"></div>

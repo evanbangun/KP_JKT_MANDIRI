@@ -20,7 +20,7 @@ class CreateTapeTable extends Migration
             $table->string('jenis_tape', 100);
             $table->string('status_tape', 100)->default('Ada di warehouse');
             $table->string('lokasi_tape', 5)->nullable();
-            $table->date('bulan_tahun');
+            $table->date('bulan_tahun')->nullable();
             $table->integer('kode_rak_tape', false, true)->nullable();
             $table->integer('slot_tape', false, true)->nullable();
             $table->string('keterangan_tape',2048)->nullable();
