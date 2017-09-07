@@ -33,7 +33,6 @@
                            <td><b>Jenis Tape</b></td>
                            <td><b>Status</b></td>
                            <td><b>Lokasi Rak</b></td>
-                           <td><b>Backup</b></td>
                        </tr>
                    </thead>
                    @foreach($tapes as $t)
@@ -46,7 +45,6 @@
                                   , Rak {{ $t->nomor_rak }}, Slot {{ $t->slot_tape }}
                                 @endif
                            </td>
-                           <td>{{ \Carbon\Carbon::parse($t->bulan_tahun)->format('j-n-Y')}}</td>
                      </tr>
                    @endforeach
               </table>

@@ -44,51 +44,91 @@
         <table class="table table-bordered table-striped table-hover table-condensed tfix">
           <thead align="center">
              <tr>
-                 <td><b>Label</b></td>
-                 <td><b>Jenis</b></td>
-                 <td><b>Umur</b></td>
-                 <td><b>Status</b></td>
-                 <td><b>Keterangan</b></td>
+                  <th>Nomor Label Tape / Tanggal Backup</th>
+                  <th>Nama File/Object</th>
+                  <th>Library</th>
+                  <th>Direstore ke Library</th>
+                  <th>Nama File/Object Baru</th>
+                  <th colspan="2">Keterangan Status Uji</th>
              </tr>
              <?php
                 $i=0;
              ?>
-            @foreach($listtesting as $lt)
-             <tr>
-                 <td>
-                    {!! Form::hidden('label_tape_testing['.$i.']', $lt->label_tape_testing) !!}
-                    {{$lt->label_tape_testing}}
-                 </td>
-                 <td>{{$lt->jenis_tape}}</td>
-                 <td>
-                    @if($lt->umur_tape_testing == 12)
-                        1 Tahun
-                    @elseif($lt->umur_tape_testing == 36)
-                        3 Tahun
-                    @else
-                        {{$lt->umur_tape_testing}} Bulan
-                    @endif
-                 </td>
-                 <td>
-                    @if($lt->hasil_tape_testing == 1)
-                        {{ Form::hidden('hasil_testing['.$i.']', '0') }}
-                        {{ Form::checkbox('hasil_testing['.$i.']', 1, true, ['id' => 'squaredFour']) }}
-                    @else
-                        {{ Form::hidden('hasil_testing['.$i.']', '0') }}
-                        {{ Form::checkbox('hasil_testing['.$i.']', 1, null, ['id' => 'squaredFour']) }}
-                    @endif
-                 </td>
-                 <td>
-                    {!! Form::text('keterangan_testing['.$i.']', $lt->keterangan_tape_testing) !!}
-                 </td>
-             </tr>
-             <?php
-                $i++;
-             ?>
-            @endforeach
+            @if(session('role') == 3 || session('role') == 0)
+                @foreach($listtesting as $lt)
+                 <tr>
+                     <td>
+                        {!! Form::hidden('label_tape_testing['.$i.']', $lt->label_tape_testing) !!}
+                        {{$lt->label_tape_testing}}
+                     </td>
+                     <td>
+                        {!! Form::text('object_awal_testing['.$i.']', $lt->object_awal_testing) !!}
+                     </td>
+                     <td>
+                        {!! Form::text('library_awal_testing['.$i.']', $lt->library_awal_testing) !!}
+                     </td>
+                     <td>
+                        {!! Form::text('library_tujuan_testing['.$i.']', $lt->library_tujuan_testing) !!}
+                     </td>
+                     <td>
+                        {!! Form::text('object_new_testing['.$i.']', $lt->object_new_testing) !!}
+                     </td>
+                     <td>
+                        @if($lt->hasil_tape_testing == 1)
+                            {{ Form::hidden('hasil_testing['.$i.']', '0') }}
+                            {{ Form::checkbox('hasil_testing['.$i.']', 1, true, ['id' => 'squaredFour']) }}
+                        @else
+                            {{ Form::hidden('hasil_testing['.$i.']', '0') }}
+                            {{ Form::checkbox('hasil_testing['.$i.']', 1, null, ['id' => 'squaredFour']) }}
+                        @endif
+                     </td>
+                     <td>
+                        {!! Form::text('keterangan_testing['.$i.']', $lt->keterangan_tape_testing) !!}
+                     </td>
+                 </tr>
+                 <?php
+                    $i++;
+                 ?>
+                @endforeach
+            @else
+                 @foreach($listtesting as $lt)
+                 <tr>
+                     <td>
+                        {{$lt->label_tape_testing}}
+                     </td>
+                     <td>
+                        {{$lt->object_awal_testing}}
+                     </td>
+                     <td>
+                        {{$lt->library_awal_testing}}
+                     </td>
+                     <td>
+                        {{$lt->library_tujuan_testing}}
+                     </td>
+                     <td>
+                        {{$lt->object_new_testing}}
+                     </td>
+                     <td>
+                        @if($lt->hasil_tape_testing == 1)
+                            {{ Form::checkbox('hasil_testing['.$i.']', 1, true, ['id' => 'squaredFour', 'disabled']) }}
+                        @else
+                            {{ Form::checkbox('hasil_testing['.$i.']', 1, null, ['id' => 'squaredFour', 'disabled']) }}
+                        @endif
+                     </td>
+                     <td>
+                        {{$lt->keterangan_tape_testing}}
+                     </td>
+                 </tr>
+                 <?php
+                    $i++;
+                 ?>
+                @endforeach
+            @endif
           </thead>
         </table>
-        {!! Form::button('Update', array('type' => 'submit', 'class' => 'btn btn-primary'))!!}
+        @if(session('role') == 3 || session('role') == 0)
+            {!! Form::button('Update', array('type' => 'submit', 'class' => 'btn btn-primary'))!!}
+        @endif
         {{ csrf_field() }}
         {!! Form::close()!!}
       </div>

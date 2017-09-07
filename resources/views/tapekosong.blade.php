@@ -54,6 +54,7 @@
                 <i class="fa fa-exclamation-triangle"></i> Tidak Ada Data
             </div>
         @endif
+        <?php echo $tape->render(); ?>
     </div>
     </div>
 @endsection

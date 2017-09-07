@@ -147,3 +147,11 @@ Route::get('pdfviewtesting/{id}',array('as'=>'pdfviewtesting','uses'=>'ActivityC
 
 Route::get('pdfviewopname/{opnameby}/{id}',array('as'=>'pdfviewopname','uses'=>'ActivityController@pdfviewopname'));
 
+Route::get('/listpinjamtape/{id}','DaftarController@listpinjam')->middleware('authuser');
+
+Route::get('/extendtiket/{id}','DaftarController@extendtiket')->middleware('authuser');
+
+Route::post('/extendupdate/{id}','DaftarController@extendupdate')->middleware('authuser');
+
+Route::get('pdfviewtiket/{id}',array('as'=>'pdfviewtiket','uses'=>'DaftarController@pdfviewtiket'));
+

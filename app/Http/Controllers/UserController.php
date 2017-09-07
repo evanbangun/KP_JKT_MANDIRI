@@ -18,12 +18,17 @@ class UserController extends Controller
         $ondelivery = DB::table('peminjamen')->where('status', 1)->count();
         $donetiket = DB::table('peminjamen')->where('status', 3)->count();
         $closetiket = DB::table('peminjamen')->where('status', 4)->count();
+        $overduetiket = DB::table('peminjamen')->where('lama_peminjaman', '<', 'CURDATE()')
+                                               ->where('status', '!=', '4')
+                                               ->groupBy('no_tiket')
+                                               ->count();
         $aktivitas = DB::table('audit_trails')->count();
         $user = DB::table('users')->count();
         $lokasi = DB::table('master_lokasis')->count();
         $testing = DB::table('list_testings')->groupBy('kode_tape_testing')->count();
         $rak = DB::table('master_raks')->count();
-        return view('home', compact('tape', 'tiket', 'aktivitas', 'user', 'newtiket', 'donetiket', 'closetiket', 'lokasi', 'rak', 'ondelivery', 'testing'));
+
+        return view('home', compact('tape', 'tiket', 'aktivitas', 'user', 'newtiket', 'donetiket', 'closetiket', 'lokasi', 'rak', 'ondelivery', 'testing', 'overduetiket'));
     }
 
     public function manageuser()

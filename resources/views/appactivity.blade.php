@@ -74,16 +74,14 @@
                 <li class=""><a href="/daftarjenistape">Tape</a></li>
               </ul>
             </li>
-            @if(session('role') != 2)
-            <li class="tm nav-parent active"><a ><span>Activity</span></a>
+            @if(session('role') != 3)
+            <li class="tm nav-parent"><a ><span>Activity</span></a>
               <ul class="children collapse">  
-                @if(session('role') != 3)
+                @if(session('role') != 2)
                 <li class=""><a href="/stockopname">Stock Opname</a></li>
                 <li class=""><a href="/movingtape">Moving Tape</a></li>
                 @endif
-                @if (session('role') != 1)
                 <li class=""><a href="/testingtape">Testing Tape</a></li>
-                @endif
               </ul>
             </li>
             @endif

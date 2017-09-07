@@ -29,7 +29,7 @@ class TapeController extends Controller
                                   ->where('digunakan_tape', '=', '1')
                                   ->orderBy('nomor_rak')
                                   ->orderBy('slot_tape')
-                                  ->get();
+                                  ->paginate(15);
         $jumlahtotaltape = DB::table('tapes')->count();
         $jumlahtapeterpakai = DB::table('tapes')->where('digunakan_tape', '=', '1')
                                                 ->count();
@@ -41,7 +41,7 @@ class TapeController extends Controller
         $tape = DB::table('tapes')->leftJoin('master_lokasis', 'tapes.lokasi_tape', '=', 'master_lokasis.kode_lokasi')
                                   ->where('digunakan_tape', '=', '0')
                                   ->orderBy('tapes.created_at', 'desc')
-                                  ->get();
+                                  ->paginate(15);
         $jumlahtotaltape = DB::table('tapes')->count();
         $jumlahtapeterpakai = DB::table('tapes')->where('digunakan_tape', '=', '1')
                                                 ->count();
@@ -97,7 +97,8 @@ class TapeController extends Controller
                                                  ->get();
                 if($check->count() == 0)
                 {
-                    return redirect('/tape/create')->withErrors(['No rack for '. $request->jenis_tape .' is available at '. $request->lokasi_tape]);
+                    $namalokasi = DB::table('master_lokasis')->where('kode_lokasi', $request->lokasi_tape)->first();
+                    return redirect('/tape/create')->withErrors(['No rack for '. $request->jenis_tape .' is available at '. $namalokasi->nama_lokasi]);
                 }
                 else
                 {
@@ -280,7 +281,6 @@ class TapeController extends Controller
         $jenistape = master_jenis_tape::pluck('nomor_jenis', 'nomor_jenis');
         $raktape = master_rak::pluck('nomor_rak', 'kode_rak');
         $lokasitape = master_lokasi::pluck('nama_lokasi', 'kode_lokasi');
-
         return view ('tambahtape',compact('jenistape', 'raktape', 'lokasitape'));
     }
 
@@ -438,6 +438,13 @@ class TapeController extends Controller
     {
         if($request->digunakan_tape == 0)
         {
+             $checkunique = DB::table('tapes')->where('nomor_label_tape', $request->nomor_label_tape)->get();
+             if($checkunique->count())
+             {
+                    $msg = 'Error duplicate tape name detected';
+                    return redirect('/tapeedit/'.$nlt)->withErrors([$msg]);
+             }
+             
              $gettapedata = DB::table('tapes')->where('nomor_label_tape', $nlt)->first();
              DB::table('tapes')->where('nomor_label_tape', $nlt)
                                ->update(['nomor_label_tape' => $request->nomor_label_tape,

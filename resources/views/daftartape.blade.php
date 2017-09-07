@@ -60,12 +60,13 @@
                            </td>
                            <td>{{ \Carbon\Carbon::parse($t->bulan_tahun)->format('j-n-Y')}}</td>
                            
-                          @if(session('role') == 0)
+                          @if(session('role') == 0 || session('role') == 1)
                             <td align="center"><a href="/tapeedit/{{$t->nomor_label_tape}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&emsp;<?php echo '<a href="#" onClick=onclickfunc("'.$t->nomor_label_tape.'"); return false; >' ?><i class="fa fa-times-circle" aria-hidden="true"></i><?php echo '</a>' ?></td>
                           @endif
                      </tr>
                    @endforeach
               </table>
+             <?php echo $tape->render(); ?>
           </div>
         @else
             <div class="alert alert-warning">

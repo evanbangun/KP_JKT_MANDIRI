@@ -1,7 +1,8 @@
 <style type="text/css">
-  table td, table th{
-    border:0px solid black;
-  }
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
 </style>
 <div class="container">
 
@@ -14,7 +15,7 @@
       <th>Jenis Tape</th>
       <th>Lokasi Rak</th>
       <th>Status</th>
-      <th>Backup</th>
+      <th width="50%">Keterangan</th>
     </tr>
     @foreach ($items as $key => $item)
     <tr align="center">
@@ -23,7 +24,7 @@
       <td>{{$item->jenis_tape}}</td>
       <td>{{$item->nama_lokasi}}</td>
       <td>{{$item->status_tape}}</td>
-      <td>{{$item->bulan_tahun}}</td>
+      <td></td>
       <td>{{ Form::checkbox('check', 1, null, ['id' => 'squaredFour']) }}</td>
     </tr>
     @endforeach

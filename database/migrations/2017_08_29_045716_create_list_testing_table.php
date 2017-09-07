@@ -18,6 +18,10 @@ class CreateListTestingTable extends Migration
             $table->string('kode_tape_testing', 2048);
             $table->string('label_tape_testing', 64);
             $table->integer('umur_tape_testing', false, true);
+            $table->string('library_awal_testing', 1024)->nullable();
+            $table->string('library_tujuan_testing', 1024)->nullable();
+            $table->string('object_awal_testing', 1024)->nullable();
+            $table->string('object_new_testing', 1024)->nullable();
             $table->integer('hasil_tape_testing', false, true)->default(0);
             $table->string('keterangan_tape_testing', 2048)->nullable();
             $table->string('penguji_tape_testing', 2048);

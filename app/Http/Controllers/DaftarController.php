@@ -7,6 +7,7 @@ use App\peminjaman;
 use App\master_lokasi;
 use App\audit_trail;
 use DB;
+use PDF;
 
 class DaftarController extends Controller
 {
@@ -117,23 +118,34 @@ class DaftarController extends Controller
         return view ('daftarrestoring',compact('tiket'))->with('alert','New Ticket');
     }
 
+    public function pdfviewtiket($id)
+    {
+        $items = DB::table('peminjamen')->leftJoin('master_lokasis', 'peminjamen.lokasi_tujuan', '=', 'master_lokasis.kode_lokasi')
+                                        ->where('no_tiket', $id)
+                                        ->get();
+        view()->share('items',$items);
+
+        $pdf = PDF::loadView('pdfviewtiket');
+        return $pdf->download($items{0}->no_tiket.'.pdf');
+    }
+
     public function editrestore($no_tiket) 
     {
-        DB::update('update peminjamen set status = 2 where no_tiket = '.$no_tiket);
+        DB::update('update peminjamen set status = 2 where no_tiket = "'.$no_tiket.'"');
         echo "Record updated successfully.<br/>";
         return redirect ('/daftardeliver');
     }
 
     public function editdone($no_tiket) 
     {
-        DB::update('update peminjamen set status = 3 where no_tiket = '.$no_tiket);
+        DB::update('update peminjamen set status = 3 where no_tiket = "'.$no_tiket.'"');
         echo "Record updated successfully.<br/>";
         return redirect ('/daftarrestore');
     }
 
     public function edit($no_tiket) 
     {
-        DB::update('update peminjamen set status = 1 where no_tiket = '.$no_tiket);
+        DB::update('update peminjamen set status = 1 where no_tiket = "'.$no_tiket.'"');
         echo "Record updated successfully.<br/>";
         return redirect ('/openticket');
     }
@@ -163,11 +175,10 @@ class DaftarController extends Controller
     public function editclose($no_tiket) 
     {
 
-        $lokasi = DB::select('select lokasi_sumber from peminjamen where no_tiket = '.$no_tiket);
-        $label=DB::select('select nomor_label_tape from peminjamen where no_tiket = '.$no_tiket);
+        $lokasi = DB::select('select lokasi_sumber from peminjamen where no_tiket = "'.$no_tiket.'"');
+        $label=DB::select('select nomor_label_tape from peminjamen where no_tiket = "'.$no_tiket.'"');
         DB::update('update tapes set lokasi_tape = ? where nomor_label_tape  = ?', [$lokasi{0}->lokasi_sumber,$label{0}->nomor_label_tape]);
-        DB::update('update peminjamen set lokasi_tujuan = lokasi_sumber where no_tiket = '.$no_tiket);
-        DB::update('update peminjamen set status = 4 where no_tiket = '.$no_tiket);
+        DB::update('update peminjamen set status = 4 where no_tiket = "'.$no_tiket.'"');
         echo "Record updated successfully.<br/>";
         return redirect ('/daftardone');
     }
@@ -179,12 +190,36 @@ class DaftarController extends Controller
           from peminjamen p 
           left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
           left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan
-          where p.lama_peminjaman = CURRENT_DATE-1 and status IN (0,1,2,3)
+          where p.lama_peminjaman < CURDATE() and status IN (0,1,2,3)
           GROUP BY no_tiket");
 
         return view ('OverDueTicket',compact('tiket'));
     }
 
+    public function extendtiket($no_tiket)
+    {
+        $getno_tiket = DB::table('peminjamen')->where('no_tiket', $no_tiket)->first();    
+        return view('/extendtiket', compact('getno_tiket'));
+    }
+
+    public function extendupdate(Request $request , $no_tiket)
+    {
+         DB::table('peminjamen')->where('no_tiket', $no_tiket)
+                                ->update(['lama_peminjaman' => $request->lama_peminjaman,
+                                          'keterangan' => $request->keterangan]);
+       
+        return redirect('/overdueticket');
+    }
+
+    public function listpinjam($no_tiket) 
+     {
+        $tiket = DB::select('select p.no_tiket,p.nomor_label_tape,m.nama_lokasi as Sumber,ml.nama_lokasi as Tujuan
+          from peminjamen p 
+          left join master_lokasis m on m.kode_lokasi = p.lokasi_sumber
+          left join master_lokasis ml on ml.kode_lokasi = p.lokasi_tujuan
+        where p.no_tiket = "'.$no_tiket.'"');
+        return view ('listpinjamtape',compact('tiket'));
+     }
     /**
      * Show the form for creating a new resource.
      *

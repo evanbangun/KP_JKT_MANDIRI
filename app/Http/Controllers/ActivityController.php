@@ -122,7 +122,8 @@ class ActivityController extends Controller
 
     public function pdfviewtesting(Request $request, $id)
     {
-        $items = DB::table('list_testings')->where('kode_tape_testing', $id)->get();
+        $items = DB::table('list_testings')->leftJoin('tapes', 'list_testings.label_tape_testing', '=', 'tapes.nomor_label_tape')
+                                           ->where('kode_tape_testing', $id)->get();
         view()->share('items',$items);
 
         if($request->has('download')){
@@ -272,7 +273,11 @@ class ActivityController extends Controller
         {
             DB::table('list_testings')->where('kode_tape_testing', $up->kode_tape_testing)
                                       ->where('label_tape_testing', $request->label_tape_testing[$index])
-                                      ->update(['hasil_tape_testing' => $request->hasil_testing[$index],
+                                      ->update(['object_awal_testing' => $request->object_awal_testing[$index],
+                                                'library_awal_testing' => $request->library_awal_testing[$index],
+                                                'library_tujuan_testing' => $request->library_tujuan_testing[$index],
+                                                'object_new_testing' => $request->object_new_testing[$index],
+                                                'hasil_tape_testing' => $request->hasil_testing[$index],
                                                 'keterangan_tape_testing' => $request->keterangan_testing[$index]]);
             $index++;
         }

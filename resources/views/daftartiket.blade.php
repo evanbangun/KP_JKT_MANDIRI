@@ -39,7 +39,7 @@
                    </thead>
                      @foreach($tiket as $t)
                        <tr>
-                           <td><a>{{ $t->no_tiket}}</a></td>
+                          <td><a href = '/listpinjamtape/{{ $t->no_tiket}}'>{{ $t->no_tiket}}</a></td >
                            <!-- <td>{{ $t->nomor_label_tape }}</td> -->
                            <td>{{ $t->Sumber}}</td>
                            <td>{{ $t->Tujuan}}</td>

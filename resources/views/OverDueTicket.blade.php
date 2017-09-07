@@ -39,19 +39,18 @@
                    </thead>
                      @foreach($tiket as $t)
                        <tr>
-                           <td>{{ $t->no_tiket}}</td>
+                          <td><a href = '/listpinjamtape/{{ $t->no_tiket}}'>{{ $t->no_tiket}}</a></td >
                            <td>{{ $t->nomor_label_tape }}</td>
                            <td>{{ $t->Sumber}}</td>
                            <td>{{ $t->Tujuan}}</td>
                            <td>{{ $t->lama_peminjaman }}</td>
-                           
                            <td>{{ $t->keterangan}}</td>
                            <td>{{ $t->status }}</td>
                            <td>{{ $t->created_at}}</td>
                            <td>{{ $t->updated_at}}</td>
-                           
-
-                           
+                           @if(session('role') == 1)
+                           <td><a href = '/extendtiket/{{ $t->no_tiket}}'> Extend</a></td>
+                           @endif
                        </tr>
                    @endforeach
                   

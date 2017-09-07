@@ -1,15 +1,17 @@
 @extends('apppeminjaman')
 @section('title')
-    Daftar Tape On delivery
+    Detail Tape   
 @endsection
 
 @section('smallcontent-header')
-    Daftar Tape On Delivery
+    Peminjaman / Daftar Tiket / List Tape
 @endsection
 
+
 @section('content-header')
-    Daftar Tape On Delivery
+     List Tape Pinjam 
 @endsection
+
 
 @section('content') 
   <div class="panel panel-default">
@@ -17,40 +19,27 @@
        <br>
         <div>
          
-          <div style="float:left; margin:0px">
+          <div style="margin:0px">
           <!--  <a class="btn btn-primary" href="\openticket"><i class="fa fa-plus-circle"></i> Daftar New Ticket</a> -->
-      
+            <a href="{{ route('pdfviewtiket',['id'=>$tiket{0}->no_tiket]) }}">Download PDF</a>
             <table style="width: 100%" class="table table-bordered table-striped table-hover table-condensed tfix">
                     <thead align="center">
                        <tr>
                           <td><b>No Tiket</b></td>
+                           <td><b>No Label Tape</b></td>
                            <td><b>Lokasi Sumber Tape</b></td>
                            <td><b>Lokasi Tujuan Tape</b></td> 
-                           <td><b>Tanggal Akhir Peminjaman</b></td>
                            
-                           
-                           <td><b>Keterangan </b></td>
-                           <td><b>Status</b></td>
-                           <td><b>Data Created</b></td>
-                           <td><b>Data Updated</b></td>
-
-                           <td><b>Action</b></td>
                            
                        </tr>
                    </thead>
                      @foreach($tiket as $t)
                        <tr>
-                          <td><a href = '/listpinjamtape/{{ $t->no_tiket}}'>{{ $t->no_tiket}}</a></td >
+                          <td>{{ $t->no_tiket}}</td>
+                           <td>{{ $t->nomor_label_tape }}</td>
                            <td>{{ $t->Sumber}}</td>
                            <td>{{ $t->Tujuan}}</td>
-                           <td>{{ $t->lama_peminjaman }}</td>
-                           
-                           <td>{{ $t->keterangan}}</td>
-                           <td>{{ $t->status }}</td>
-                           <td>{{ $t->created_at}}</td>
-                           <td>{{ $t->updated_at}}</td>
-                           <td><a href = '/updaterestore/{{ $t->no_tiket}}'> Restoring</a></td>
-                           
+  
                        </tr>
                    @endforeach
                   

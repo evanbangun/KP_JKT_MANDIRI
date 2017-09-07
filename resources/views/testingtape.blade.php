@@ -51,7 +51,9 @@
             @endforeach
           </thead>
         </table>
+        @if(session('role') == 2 || session('role') == 0 )
         <a href="/createtesting" class="btn btn-primary">Uji Baru</a>
+        @endif
       </div>
     </div>
     </div>

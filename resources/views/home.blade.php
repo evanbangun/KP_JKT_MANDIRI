@@ -150,7 +150,7 @@
       <div class="three col">
           <div class="hamburger" id="hamburger-1">
          <i class="fa fa-check" style="font-size:36px;"></i>
-          <div class="line"> <a href="#"><h2><b><font color="white">Mengelola Report Testing</font></b></h2></a></div>
+          <div class="line"> <a href="/testingtape"><h2><b><font color="white">Mengelola Report Testing</font></b></h2></a></div>
           
         </div>
       </div>
@@ -169,8 +169,8 @@
                             <i class="material-icons">playlist_add_check</i>
                         </div>
                         <div class="content">
-                            <div class="text">Jumlah Tape</div>
-                            <div class="text">{{$tape}}</div>
+                            <div class="text">Overdue Ticket</div>
+                            <div class="text">{{$overduetiket}}</div>
                         </div>
                     </div>
                 </div>
@@ -358,7 +358,7 @@
      <div class="three col">
           <div class="hamburger" id="hamburger-1">
          <i class="fa fa-check" style="font-size:36px;"></i>
-          <div class="line"> <a href="#"><h2><b><font color="white">Mengelola Report Testing</font></b></h2></a></div>
+          <div class="line"> <a href="/testingtape"><h2><b><font color="white">Mengelola Report Testing</font></b></h2></a></div>
           
         </div>
       </div>
