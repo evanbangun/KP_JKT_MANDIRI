@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class audit_trail extends Model
 {
+    
 	public $timestamps = false;
     public $incrementing = true;
     protected $primaryKey = 'idaudit';

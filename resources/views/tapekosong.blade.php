@@ -12,6 +12,15 @@
 @endsection
 
 @section('content')	
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif  
 	<div class="panel panel-default">
     <div class="panel-body">
         @if(session('role') == 0 || session('role') == 1)

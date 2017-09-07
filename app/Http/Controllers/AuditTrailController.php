@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\audit_trail;
 use DB;
+use SortableTrait;
 
 class AuditTrailController extends Controller
 {
@@ -15,8 +16,8 @@ class AuditTrailController extends Controller
      */
     public function index()
     {
-        $audittrail = DB::table('audit_trails')->orderBy('waktu_at')
-                                               ->get();
+        $audittrail = DB::table('audit_trails')->orderBy('waktu_at', 'desc')
+                                               ->paginate(15);
         return view('/audittrail', compact('audittrail'));
     }
 

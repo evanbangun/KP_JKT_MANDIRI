@@ -38,7 +38,7 @@
         Kosong : {{ $jumlahtotaltape - $jumlahtapeterpakai }} &emsp; &emsp;
         @if(count($tape))
             <div class="table-responsive">
-                <table id="sorttable" class="table table-bordered table-striped table-hover table-condensed tfix">
+                <table id="myTable" class="table table-bordered table-striped table-hover table-condensed tfix">
                     <thead align="center">
                        <tr>
                            <td><b>Nomor Tape</b></td>
@@ -74,7 +74,6 @@
         @endif
     </div>
     </div>
-@endsection
 <script>
     function onclickfunc(id) {
         if(confirm("Do you want to delete this item ?"))
@@ -83,3 +82,11 @@
         }
     }
 </script>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#myTable").tablesorter(); 
+    } 
+); 
+</script>
+@endsection

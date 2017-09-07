@@ -168,7 +168,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
-
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -178,7 +178,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         
-        Yajra\Datatables\DatatablesServiceProvider::class,
 
     ],
 
@@ -194,7 +193,8 @@ return [
     */
 
     'aliases' => [
-
+    
+        'PDF' => Barryvdh\DomPDF\Facade::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'App' => Illuminate\Support\Facades\App::class,

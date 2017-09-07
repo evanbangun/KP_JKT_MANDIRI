@@ -11,6 +11,7 @@
     Update {{$listtesting{0}->kode_tape_testing}} 
 @endsection
 
+@section('content')
 <style >
   input[type=checkbox] {
     visibility: hidden;
@@ -26,8 +27,6 @@
 }
 /* end .squaredFour */
 </style>
-
-@section('content')
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -51,10 +50,13 @@
                  <td><b>Status</b></td>
                  <td><b>Keterangan</b></td>
              </tr>
+             <?php
+                $i=0;
+             ?>
             @foreach($listtesting as $lt)
              <tr>
                  <td>
-                    {!! Form::hidden('label_tape_testing[]', $lt->label_tape_testing) !!}
+                    {!! Form::hidden('label_tape_testing['.$i.']', $lt->label_tape_testing) !!}
                     {{$lt->label_tape_testing}}
                  </td>
                  <td>{{$lt->jenis_tape}}</td>
@@ -69,15 +71,20 @@
                  </td>
                  <td>
                     @if($lt->hasil_tape_testing == 1)
-                        {{ Form::checkbox('hasil_testing[]', 1, true, ['id' => 'squaredFour']) }}
+                        {{ Form::hidden('hasil_testing['.$i.']', '0') }}
+                        {{ Form::checkbox('hasil_testing['.$i.']', 1, true, ['id' => 'squaredFour']) }}
                     @else
-                        {{ Form::checkbox('hasil_testing[]', 1, null, ['id' => 'squaredFour']) }}
+                        {{ Form::hidden('hasil_testing['.$i.']', '0') }}
+                        {{ Form::checkbox('hasil_testing['.$i.']', 1, null, ['id' => 'squaredFour']) }}
                     @endif
                  </td>
                  <td>
-                    {!! Form::text('keterangan_testing[]', $lt->keterangan_tape_testing) !!}
+                    {!! Form::text('keterangan_testing['.$i.']', $lt->keterangan_tape_testing) !!}
                  </td>
              </tr>
+             <?php
+                $i++;
+             ?>
             @endforeach
           </thead>
         </table>

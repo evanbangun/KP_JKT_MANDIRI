@@ -249,6 +249,12 @@ class TapeController extends Controller
         
         foreach($arrlabel as $nlt)
         {
+            $check = DB::table('tapes')->where('nomor_label_tape', $nlt)->get();
+            if($check->count())
+            {
+                $msg = "nomor label tape ".$nlt." already exists";
+                return redirect('/tapekosong')->withErrors([$msg]);
+            }
             $tape = new tape;
             $tape->nomor_label_tape = $nlt;
             $tape->lokasi_tape = $request->lokasi_tape;
@@ -467,6 +473,16 @@ class TapeController extends Controller
             if($check->count())
             {
                 $msg = $request->nomor_label_tape.' already exist';
+                return redirect('/tapeedit/'.$nlt)->withErrors([$msg]);
+            }
+            $check = DB::table('tapes')->where('lokasi_tape', $request->lokasi_tape)
+                                       ->where('kode_rak_tape', $request->kode_rak_tape)
+                                       ->where('slot_tape', $request->slot_tape)
+                                       ->where('nomor_label_tape', '!=', $nlt)
+                                       ->get();
+            if($check->count())
+            {
+                $msg ='Slot is already occupied';
                 return redirect('/tapeedit/'.$nlt)->withErrors([$msg]);
             }
             DB::table('tapes')->where('nomor_label_tape', $nlt)

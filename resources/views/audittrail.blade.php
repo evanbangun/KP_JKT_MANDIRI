@@ -33,6 +33,7 @@
                             </tr>
                        @endforeach
               </table>
+             <?php echo $audittrail->render(); ?>
           </div>
         </div>
     </div>

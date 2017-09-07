@@ -119,7 +119,4 @@ div.tab button.active {
       {!! Form::close()!!}
     </div>
   </div>
-
-</body>
-</html>
 @endsection

@@ -97,6 +97,8 @@ Route::post('/jenistapedelete/{id}','TambahController@jenistapedelete')->middlew
 
 Route::get('/stockopname','ActivityController@stockopname')->middleware('authuser');
 
+Route::get('/opnamelist','ActivityController@opnamelist')->middleware('authuser');
+
 Route::get('/movingtape','ActivityController@movingtape')->middleware('authuser');
 
 Route::post('/movetape','ActivityController@movetape')->middleware('authuser');
@@ -140,4 +142,8 @@ Route::get('/closetick/{id}','DaftarController@editclose')->middleware('authuser
 Route::resource('audittrail', 'AuditTrailController');
 
 Route::get('/audittrail', 'AuditTrailController@index')->middleware('authuser');
+
+Route::get('pdfviewtesting/{id}',array('as'=>'pdfviewtesting','uses'=>'ActivityController@pdfviewtesting'));
+
+Route::get('pdfviewopname/{opnameby}/{id}',array('as'=>'pdfviewopname','uses'=>'ActivityController@pdfviewopname'));
 

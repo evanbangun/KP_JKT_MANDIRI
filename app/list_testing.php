@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class list_testing extends Model
 {
     public $incrementing = true;

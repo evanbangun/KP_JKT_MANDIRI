@@ -41,6 +41,9 @@
                  <td>{{$jt->penguji_tape_testing}}</td>
                  <td>{{date_create($jt->created_at)->format('d-m-Y')}}</td>
                  <td>{{$hasil[$index]}} </td>
+                 @if($hasil[$index] == 'Finished')
+                 <td><a target="blank" href='/pdfviewtesting/{{$jt->kode_tape_testing}}'>Export to pdf</a></td>
+                 @endif
              </tr>
              <?php
               $index++;
