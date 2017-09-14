@@ -155,3 +155,6 @@ Route::post('/extendupdate/{id}','DaftarController@extendupdate')->middleware('a
 
 Route::get('pdfviewtiket/{id}',array('as'=>'pdfviewtiket','uses'=>'DaftarController@pdfviewtiket'));
 
+Route::get('datatable', ['uses'=>'PostController@datatable']);
+
+Route::get('datatable/getposts', ['as'=>'datatable.getposts','uses'=>'PostController@getPosts']);

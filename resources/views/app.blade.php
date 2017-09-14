@@ -90,7 +90,6 @@
                 <li class=""><a href="/testingtape">Testing Tape</a></li>
               </ul>
             </li>
-            @endif
             <li ><a href="/audittrail"><span>Audit Trail</span></a>
             </li>
             @if(session('role') == 0)

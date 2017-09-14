@@ -74,7 +74,6 @@
                 <li class=""><a href="/daftarjenistape">Tape</a></li>
               </ul>
             </li>
-            @if(session('role') != 3)
             <li class="tm nav-parent"><a ><span>Activity</span></a>
               <ul class="children collapse">  
                 @if(session('role') != 2)
@@ -84,7 +83,6 @@
                 <li class=""><a href="/testingtape">Testing Tape</a></li>
               </ul>
             </li>
-            @endif
             <li ><a href="/audittrail"><span>Audit Trail</span></a>
             </li>
             @if(session('role') == 0)

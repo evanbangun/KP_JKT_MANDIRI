@@ -33,7 +33,9 @@ class TapeController extends Controller
         $jumlahtotaltape = DB::table('tapes')->count();
         $jumlahtapeterpakai = DB::table('tapes')->where('digunakan_tape', '=', '1')
                                                 ->count();
-        return view ('daftartape',compact('tape', 'jumlahtotaltape', 'jumlahtapeterpakai'));
+        $rows = tape::get(); // Get all users from the database
+        $table = Table::create($rows); // Generate a Table based on these "rows"
+        return view ('daftartape',compact('tape', 'jumlahtotaltape', 'jumlahtapeterpakai', 'table'));
     }
 
     public function index2()

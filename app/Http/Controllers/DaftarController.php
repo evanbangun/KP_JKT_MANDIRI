@@ -56,6 +56,9 @@ class DaftarController extends Controller
 
     public function storepeminjaman(Request $request)
     {   
+        $this->validate($request, [
+        'no_tiket' => 'unique:peminjamen',
+        ]);
         $arrlabel = preg_split("/[\s,]+/", $request->nomor_label_tape);
         
         foreach($arrlabel as $nlt)
@@ -133,6 +136,10 @@ class DaftarController extends Controller
     {
         DB::update('update peminjamen set status = 2 where no_tiket = "'.$no_tiket.'"');
         echo "Record updated successfully.<br/>";
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Update status ".$no_tiket." menjadi restoring";
+        $audittrail->save();
         return redirect ('/daftardeliver');
     }
 
@@ -140,6 +147,11 @@ class DaftarController extends Controller
     {
         DB::update('update peminjamen set status = 3 where no_tiket = "'.$no_tiket.'"');
         echo "Record updated successfully.<br/>";
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Update status ".$no_tiket." menjadi done";
+        $audittrail->save();
         return redirect ('/daftarrestore');
     }
 
@@ -147,6 +159,11 @@ class DaftarController extends Controller
     {
         DB::update('update peminjamen set status = 1 where no_tiket = "'.$no_tiket.'"');
         echo "Record updated successfully.<br/>";
+
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Update status ".$no_tiket." menjadi on deliver";
+        $audittrail->save();
         return redirect ('/openticket');
     }
     
@@ -180,6 +197,10 @@ class DaftarController extends Controller
         DB::update('update tapes set lokasi_tape = ? where nomor_label_tape  = ?', [$lokasi{0}->lokasi_sumber,$label{0}->nomor_label_tape]);
         DB::update('update peminjamen set status = 4 where no_tiket = "'.$no_tiket.'"');
         echo "Record updated successfully.<br/>";
+        $audittrail = new audit_trail;
+        $audittrail->actor_at = session('email');
+        $audittrail->keterangan_at = "Update status ".$no_tiket." menjadi closed";
+        $audittrail->save();
         return redirect ('/daftardone');
     }
 
